@@ -45,10 +45,10 @@ throw (
    if (classIndex != 0 && netIO->isObjectClassPublished(classIndex)) {
       // It's an object class that we publish, so we can start to
       // register our objects ...
-      //std::cout << classIndex; 
+      //std::cout << classIndex;
       netIO->setObjectClassRegistrationFlag(classIndex,true);
    }
-   //std::cout << std::endl; 
+   //std::cout << std::endl;
 }
 
 //------------------------------------------------------------------------------
@@ -67,7 +67,7 @@ throw (
       //std::cout << classIndex;
       netIO->setObjectClassRegistrationFlag(classIndex,false);
    }
-   //std::cout << std::endl; 
+   //std::cout << std::endl;
 }
 
 //------------------------------------------------------------------------------
@@ -85,9 +85,9 @@ throw (
 
    // Find the output object
    NetIO* netIO = getNetIO();
-   Nib* nib = (Nib*)(netIO->findNibByObjectHandle(theObject, NetIO::OUTPUT_NIB));
+   Nib* nib = static_cast<Nib*>(netIO->findNibByObjectHandle(theObject, NetIO::OUTPUT_NIB));
 
-   if (nib != 0) nib->turnUpdatesOn(theAttributes);
+   if (nib != nullptr) nib->turnUpdatesOn(theAttributes);
    //else std::cout << " NOT FOUND";
    //std::cout << std::endl;
 }
@@ -107,9 +107,9 @@ throw (
 
    // Find the output object
    NetIO* netIO = getNetIO();
-   Nib* nib = (Nib*)(netIO->findNibByObjectHandle(theObject, NetIO::OUTPUT_NIB));
+   Nib* nib = static_cast<Nib*>(netIO->findNibByObjectHandle(theObject, NetIO::OUTPUT_NIB));
 
-   if (nib != 0) nib->turnUpdatesOff(theAttributes);
+   if (nib != nullptr) nib->turnUpdatesOff(theAttributes);
    //std::cout << std::endl;
 }
 
@@ -130,7 +130,7 @@ throw (
    NetIO* netIO = getNetIO();
    Nib* nib = (Nib*)( netIO->findNibByObjectHandle(theObject, NetIO::OUTPUT_NIB) );
 
-   if (nib != 0) nib->provideAttributeValueUpdate(theAttrs);
+   if (nib != nullptr) nib->provideAttributeValueUpdate(theAttrs);
    //std::cout << std::endl;
 }
 
@@ -146,7 +146,7 @@ throw (
    RTI::ObjectClassNotKnown,
    RTI::FederateInternalError)
 {
-   std::cout << "Ambassador::discoverObjectInstance(): " << theObjectName << ", handle = " << theObject << std::endl; 
+   std::cout << "Ambassador::discoverObjectInstance(): " << theObjectName << ", handle = " << theObject << std::endl;
    NetIO* netIO = getNetIO();
    int classIndex = netIO->findObjectClassIndex(theObjectClass);
    if (classIndex != 0 && netIO->isObjectClassSubscribed(classIndex)) {
@@ -175,7 +175,7 @@ throw (
 
 void Ambassador::removeObjectInstance (
         RTI::ObjectHandle          theObject,
-  const char                      *theTag)
+  const char*                      theTag)
 throw (
    RTI::ObjectNotKnown,
    RTI::FederateInternalError)
@@ -185,7 +185,7 @@ throw (
    // find the input object
    NetIO* netIO = getNetIO();
    Nib* nib = netIO->findNibByObjectHandle(theObject, NetIO::INPUT_NIB);
-   if (nib != 0) {
+   if (nib != nullptr) {
       // set NIB delete request (Simulation::NetIO::cleanupInputList() should handle this)
       nib->setMode(Simulation::Player::DELETE_REQUEST);
    }
@@ -224,14 +224,14 @@ throw (
    // find the input object
    NetIO* netIO = getNetIO();
    Nib* nib = (Nib*)( netIO->findNibByObjectHandle(theObject, NetIO::INPUT_NIB) );
-   if (nib != 0) nib->reflectAttributeValues(theAttrs);
+   if (nib != nullptr) nib->reflectAttributeValues(theAttrs);
 }
 
 //------------------------------------------------------------------------------
 // turnInteractionsOn
 //------------------------------------------------------------------------------
 void Ambassador::turnInteractionsOn (
-     RTI::InteractionClassHandle theInteraction) 
+     RTI::InteractionClassHandle theInteraction)
    throw (
      RTI::InteractionClassNotPublished,
      RTI::FederateInternalError)
@@ -242,17 +242,17 @@ void Ambassador::turnInteractionsOn (
    if (idx != 0 && netIO->isInteractionClassPublished(idx)) {
       // It's an interaction that we publish, so we can start
       // send new interactions of this class ...
-      std::cout << idx; 
+      std::cout << idx;
       netIO->setInteractionEnabledFlag(idx,true);
    }
-   std::cout << std::endl; 
+   std::cout << std::endl;
 }
 
 //------------------------------------------------------------------------------
 // turnInteractionsOff
 //------------------------------------------------------------------------------
 void Ambassador::turnInteractionsOff (
-     RTI::InteractionClassHandle theInteraction) 
+     RTI::InteractionClassHandle theInteraction)
    throw (
      RTI::InteractionClassNotPublished,
      RTI::FederateInternalError)
@@ -261,10 +261,10 @@ void Ambassador::turnInteractionsOff (
    NetIO* netIO = getNetIO();
    int idx = netIO->findInteractionClassIndex(theInteraction);
    if (idx != 0) {
-      std::cout << idx; 
+      std::cout << idx;
       netIO->setInteractionEnabledFlag(idx,false);
    }
-   std::cout << std::endl; 
+   std::cout << std::endl;
 }
 
 
@@ -295,7 +295,7 @@ throw (
    RTI::InteractionParameterNotKnown,
    RTI::FederateInternalError)
 {
-   std::cout << "Ambassador::receiveInteraction(): " << theInteraction << std::endl; 
+   std::cout << "Ambassador::receiveInteraction(): " << theInteraction << std::endl;
    NetIO* netIO = getNetIO();
    int idx = netIO->findInteractionClassIndex(theInteraction);
    if (idx != 0 && netIO->isInteractionClassSubscribed(idx)) {
@@ -312,20 +312,20 @@ throw (
 
 void
 Ambassador::synchronizationPointRegistrationSucceeded (
-   const char *label) 
+   const char *label)
 throw (
    RTI::FederateInternalError)
 {
-   cout << "Unhandled synchronizationPointRegistrationSucceeded()" << endl;
+   std::cout << "Unhandled synchronizationPointRegistrationSucceeded()" << endl;
 }
 
 void
 Ambassador::synchronizationPointRegistrationFailed (
-   const char *label) 
+   const char *label)
 throw (
    RTI::FederateInternalError)
 {
-   cout << "Unhandled synchronizationPointRegistrationFailed()" << endl;
+   std::cout << "Unhandled synchronizationPointRegistrationFailed()" << endl;
 }
 
 void
@@ -335,7 +335,7 @@ Ambassador::announceSynchronizationPoint (
 throw (
    RTI::FederateInternalError)
 {
-   cout << "Unhandled announceSynchronizationPoint()" << endl;
+   std::cout << "Unhandled announceSynchronizationPoint()" << endl;
 }
 
 void
@@ -344,7 +344,7 @@ Ambassador::federationSynchronized (
 throw (
    RTI::FederateInternalError)
 {
-   cout << "Unhandled federationSynchronized()" << endl;
+   std::cout << "Unhandled federationSynchronized()" << endl;
 }
 
 void
@@ -362,7 +362,7 @@ Ambassador::federationSaved ()
 throw (
    RTI::FederateInternalError)
 {
-   cout << "Unhandled federationSaved()" << endl;
+   std::cout << "Unhandled federationSaved()" << endl;
 }
 
 void
@@ -370,16 +370,16 @@ Ambassador::federationNotSaved ()
 throw (
    RTI::FederateInternalError)
 {
-   cout << "Unhandled federationNotSaved()" << endl;
+   std::cout << "Unhandled federationNotSaved()" << endl;
 }
 
 void
 Ambassador::requestFederationRestoreSucceeded (
-   const char *label) 
+   const char *label)
 throw (
    RTI::FederateInternalError)
 {
-   cout << "Unhandled requestFederationRestoreSucceeded()" << endl;
+   std::cout << "Unhandled requestFederationRestoreSucceeded()" << endl;
 }
 
 void
@@ -389,7 +389,7 @@ Ambassador::requestFederationRestoreFailed (
 throw (
    RTI::FederateInternalError)
 {
-   cout << "Unhandled requestFederationRestoreFailed()" << endl;
+   std::cout << "Unhandled requestFederationRestoreFailed()" << endl;
 }
 
 void
@@ -397,7 +397,7 @@ Ambassador::federationRestoreBegun ()
 throw (
    RTI::FederateInternalError)
 {
-   cout << "Unhandled federationRestoreBegun()" << endl;
+   std::cout << "Unhandled federationRestoreBegun()" << endl;
 }
 
 void
@@ -409,7 +409,7 @@ throw (
    RTI::CouldNotRestore,
    RTI::FederateInternalError)
 {
-   cout << "Unhandled initiateFederateRestore()" << endl;
+   std::cout << "Unhandled initiateFederateRestore()" << endl;
 }
 
 void
@@ -417,7 +417,7 @@ Ambassador::federationRestored ()
 throw (
    RTI::FederateInternalError)
 {
-   cout << "Unhandled federationRestored()" << endl;
+   std::cout << "Unhandled federationRestored()" << endl;
 }
 
 void
@@ -425,7 +425,7 @@ Ambassador::federationNotRestored ()
 throw (
    RTI::FederateInternalError)
 {
-   cout << "Unhandled federationNotRestored()" << endl;
+   std::cout << "Unhandled federationNotRestored()" << endl;
 }
 
 ////////////////////////////////
@@ -522,8 +522,8 @@ throw (
 
 void
 Ambassador::requestAttributeOwnershipRelease (
-        RTI::ObjectHandle        theObject, 
-  const RTI::AttributeHandleSet& candidateAttributes, 
+        RTI::ObjectHandle        theObject,
+  const RTI::AttributeHandleSet& candidateAttributes,
   const char                     *theTag)
 throw (
   RTI::ObjectNotKnown,
@@ -536,7 +536,7 @@ throw (
 
 void
 Ambassador::confirmAttributeOwnershipAcquisitionCancellation (
-        RTI::ObjectHandle        theObject, 
+        RTI::ObjectHandle        theObject,
   const RTI::AttributeHandleSet& theAttributes)
 throw (
   RTI::ObjectNotKnown,

@@ -35,8 +35,8 @@ class Ambassador : public RTI::FederateAmbassador
 public:
    Ambassador(NetIO* nio);
    virtual ~Ambassador() throw(RTI::FederateInternalError);
-    
-   NetIO* getNetIO()               { return hlaIo; }
+
+   NetIO* getNetIO()                           { return hlaIo; }
 
 private:
    NetIO* hlaIo;         // Our controlling NetIO
@@ -47,31 +47,31 @@ private:
 public:
    // 4.7
    virtual void synchronizationPointRegistrationSucceeded (
-     const char *label) // supplied C4
+     const char* label) // supplied C4
    throw (
       RTI::FederateInternalError);
 
    virtual void synchronizationPointRegistrationFailed (
-     const char *label) // supplied C4
+     const char* label) // supplied C4
    throw (
       RTI::FederateInternalError);
 
    // 4.8
    virtual void announceSynchronizationPoint (
-     const char *label, // supplied C4
-     const char *tag)   // supplied C4
+     const char* label, // supplied C4
+     const char* tag)   // supplied C4
    throw (
       RTI::FederateInternalError);
 
    // 4.10
    virtual void federationSynchronized (
-     const char *label) // supplied C4)
+     const char* label) // supplied C4)
    throw (
       RTI::FederateInternalError);
 
    // 4.12
    virtual void initiateFederateSave (
-     const char *label) // supplied C4
+     const char* label) // supplied C4
    throw (
      RTI::UnableToPerformSave,
      RTI::FederateInternalError);
@@ -87,13 +87,13 @@ public:
 
    // 4.17
    virtual void requestFederationRestoreSucceeded (
-     const char *label) // supplied C4
+     const char* label) // supplied C4
    throw (
       RTI::FederateInternalError);
 
    virtual void requestFederationRestoreFailed (
-     const char *label,  // supplied C4
-     const char *reason) // supplied C4
+     const char* label,  // supplied C4
+     const char* reason) // supplied C4
    throw (
       RTI::FederateInternalError);
 
@@ -104,7 +104,7 @@ public:
 
    // 4.19
    virtual void initiateFederateRestore (
-     const char *label,   // supplied C4
+     const char* label,   // supplied C4
            RTI::FederateHandle handle)  // supplied C1
    throw (
      RTI::SpecifiedSaveLabelDoesNotExist,
@@ -160,7 +160,7 @@ public:
    virtual void discoverObjectInstance (
            RTI::ObjectHandle          theObject,       // supplied C1
            RTI::ObjectClassHandle     theObjectClass,  // supplied C1
-     const char *                theObjectName)  // supplied C4
+     const char*                      theObjectName)   // supplied C4
    throw (
      RTI::CouldNotDiscover,
      RTI::ObjectClassNotKnown,
@@ -171,7 +171,7 @@ public:
            RTI::ObjectHandle                 theObject,     // supplied C1
      const RTI::AttributeHandleValuePairSet& theAttributes, // supplied C4
      const RTI::FedTime&                     theTime,       // supplied C1
-     const char                        *theTag,        // supplied C4
+     const char*                             theTag,        // supplied C4
            RTI::EventRetractionHandle        theHandle)     // supplied C1
    throw (
      RTI::ObjectNotKnown,
@@ -183,7 +183,7 @@ public:
    virtual void reflectAttributeValues (
            RTI::ObjectHandle                 theObject,     // supplied C1
      const RTI::AttributeHandleValuePairSet& theAttributes, // supplied C4
-     const char                        *theTag)        // supplied C4
+     const char*                             theTag)        // supplied C4
    throw (
      RTI::ObjectNotKnown,
      RTI::AttributeNotKnown,
@@ -195,7 +195,7 @@ public:
            RTI::InteractionClassHandle       theInteraction, // supplied C1
      const RTI::ParameterHandleValuePairSet& theParameters,  // supplied C4
      const RTI::FedTime&                     theTime,        // supplied C4
-     const char                        *theTag,         // supplied C4
+     const char*                             theTag,         // supplied C4
            RTI::EventRetractionHandle        theHandle)      // supplied C1
    throw (
      RTI::InteractionClassNotKnown,
@@ -206,7 +206,7 @@ public:
    virtual void receiveInteraction (
            RTI::InteractionClassHandle       theInteraction, // supplied C1
      const RTI::ParameterHandleValuePairSet& theParameters,  // supplied C4
-     const char                        *theTag)         // supplied C4
+     const char*                             theTag)         // supplied C4
    throw (
      RTI::InteractionClassNotKnown,
      RTI::InteractionParameterNotKnown,
@@ -216,7 +216,7 @@ public:
    virtual void removeObjectInstance (
            RTI::ObjectHandle          theObject, // supplied C1
      const RTI::FedTime&              theTime,   // supplied C4
-     const char                 *theTag,    // supplied C4
+     const char*                      theTag,    // supplied C4
            RTI::EventRetractionHandle theHandle) // supplied C1
    throw (
      RTI::ObjectNotKnown,
@@ -225,7 +225,7 @@ public:
 
    virtual void removeObjectInstance (
            RTI::ObjectHandle          theObject, // supplied C1
-     const char                 *theTag)    // supplied C4
+     const char*                      theTag)    // supplied C4
    throw (
      RTI::ObjectNotKnown,
      RTI::FederateInternalError);
@@ -284,7 +284,7 @@ public:
    virtual void requestAttributeOwnershipAssumption (
            RTI::ObjectHandle        theObject,         // supplied C1
      const RTI::AttributeHandleSet& offeredAttributes, // supplied C4
-     const char               *theTag)            // supplied C4
+     const char*                    theTag)            // supplied C4
    throw (
      RTI::ObjectNotKnown,
      RTI::AttributeNotKnown,
@@ -331,7 +331,7 @@ public:
    virtual void requestAttributeOwnershipRelease (
            RTI::ObjectHandle        theObject,           // supplied C1
      const RTI::AttributeHandleSet& candidateAttributes, // supplied C4
-     const char               *theTag)              // supplied C4
+     const char*                    theTag)              // supplied C4
    throw (
      RTI::ObjectNotKnown,
      RTI::AttributeNotKnown,

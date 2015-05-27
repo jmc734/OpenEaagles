@@ -19,8 +19,7 @@ namespace RprFom {
 //    This class, which is derived from the Simulation::Ntm, maps Eaagles
 //    player types to/from RPR FOM entity type codes.
 //
-//
-// Form name: HlaNtm
+// Factory name: HlaNtm
 // Slots:
 //    entityType  <vector>    ! Entity type vector:
 //                            !  [ kind domain country category subcategory specific extra ]
@@ -29,7 +28,7 @@ namespace RprFom {
 //------------------------------------------------------------------------------
 class Ntm : public Simulation::Ntm
 {
-    DECLARE_SUBCLASS(Ntm,Simulation::Ntm)
+    DECLARE_SUBCLASS(Ntm, Simulation::Ntm)
 
 public:
    Ntm();

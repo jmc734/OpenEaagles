@@ -10,12 +10,14 @@
 #include "openeaagles/hla/Nib.h"
 
 namespace Eaagles {
-   namespace Simulation { class Player; }
+
+namespace Simulation { class Player; }
 
 namespace Network {
 namespace Hla {
 namespace RprFom {
-   class BaseEntity;
+
+class BaseEntity;
 
 //==============================================================================
 // Class:       Nib
@@ -23,10 +25,10 @@ namespace RprFom {
 class Nib : public Hla::Nib
 {
    DECLARE_SUBCLASS(Nib, Hla::Nib)
-    
+
 public:
    static const unsigned int MAX_EMITTER_BEAMS = 6;
-    
+
 public:
    Nib(const Simulation::NetIO::IoType ioType);
 
@@ -39,9 +41,9 @@ public:
    unsigned short getApplicationID() const                    { return appID; }
    virtual void setApplicationID(const unsigned short v);
 
-   // Standard (DIS) entity type codes 
+   // Standard (DIS) entity type codes
    unsigned char getEntityKind() const         { return disKind; }              // DIS kind type code (or 255 if not valid)
-   unsigned char getEntityDomain() const       { return disDomain; }            // DIS domain type code 
+   unsigned char getEntityDomain() const       { return disDomain; }            // DIS domain type code
    unsigned short getEntityCountry() const     { return disCountry; }           // DIS country type code
    unsigned char getEntityCategory() const     { return disCategory; }          // DIS category type code
    unsigned char getEntitySubcategory() const  { return disSubcategory; }       // DIS subcategory type code
@@ -70,8 +72,8 @@ public:
    virtual void updatePlatform(RTI::AttributeHandleValuePairSet* attrs, const LCreal curExecTime);
 
    // FOM data structures
-   BaseEntity* getBaseEntity()               { return baseEntity; }
-   const BaseEntity* getBaseEntity() const   { return baseEntity; }
+   BaseEntity* getBaseEntity()                          { return baseEntity; }
+   const BaseEntity* getBaseEntity() const              { return baseEntity; }
    virtual void setBaseEntity(BaseEntity* const p);
 
    // Simulation::Nib Interface
@@ -82,8 +84,8 @@ public:
    virtual bool munitionDetonationMsgFactory(const LCreal curExecTime);
 
 private:
-   unsigned short  siteID;     // Site ID
-   unsigned short  appID;      // Application ID
+   unsigned short siteID;     // Site ID
+   unsigned short appID;      // Application ID
 
    // Standard (DIS based) type codes
    unsigned char  disKind;          // DIS kind code
@@ -99,10 +101,10 @@ private:
    unsigned short fireEvent;       // Weapon fire event (for Weapon type objects)
 
    // Things we need before creating an IPlayer
-   bool    haveEntityIdFlg;
-   bool    haveEntityTypeFlg;
-   bool    haveWorldLocationFlg;
-   bool    haveOrientationFlg;
+   bool haveEntityIdFlg;
+   bool haveEntityTypeFlg;
+   bool haveWorldLocationFlg;
+   bool haveOrientationFlg;
 };
 
 } // End RprFom namespace

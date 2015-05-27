@@ -7,7 +7,7 @@
 
 #include <RTI.hh>
 #include "openeaagles/basic/Object.h"
- 
+
 namespace Eaagles {
 namespace Network {
 namespace Hla {
@@ -17,7 +17,7 @@ namespace RprFom {
 // RPR-ROM: Enumerated Data
 //------------------------------------------------------------------------------
 
-// CamouflageEnum32 -- 
+// CamouflageEnum32 --
 enum CamouflageEnum32 {
     UNIFORM_PAINT_SCHEME = 0,
     DESERT_CAMOUFLAGE = 1,
@@ -46,7 +46,7 @@ enum ComplianceStateEnum32 {
     NonLethalWeapon6 = 15
 };
 
-// DamageStatusEnum32 -- 
+// DamageStatusEnum32 --
 enum DamageStatusEnum32 {
     NO_DAMAGE = 0,
     SLIGHT_DAMAGE = 1,
@@ -105,7 +105,7 @@ enum DetonationResultCodeEnum8 {
     Miss_due_to_fly_out_and_end_game_failure = 33
 };
 
-// ForceIdentifierEnum8 -- 
+// ForceIdentifierEnum8 --
 enum ForceIdentifierEnum8 {
     OTHER = 0,
     FRIENDLY   = 1,
@@ -239,7 +239,7 @@ enum FuseTypeEnum16 {
     MechanicalTail = 9620
 };
 
-// HatchStateEnum32 -- 
+// HatchStateEnum32 --
 enum HatchStateEnum32 {
     HATCH_STATE_NOT_APPLICABLE = 0,
     PRIMARY_HATCH_IS_CLOSED = 1,
@@ -249,7 +249,7 @@ enum HatchStateEnum32 {
     PRIMARY_HATCH_IS_OPEN_AND_PERSON_IS_VISIBLE = 5,
 };
 
-// MarkingEncodingEnum8 -- 
+// MarkingEncodingEnum8 --
 enum MarkingEncodingEnum8 {
     MARKING_OTHER = 0,
     ASCII = 1,
@@ -257,7 +257,7 @@ enum MarkingEncodingEnum8 {
     DIGIT_CHEVRON = 3,
 };
 
-// Stance Code -- 
+// Stance Code --
 enum StanceCodeEnum32 {
    STANCE_CODE_NOT_APPLICABLE = 0,
    UPRIGHT_STANDING_STILL = 1,
@@ -277,7 +277,7 @@ enum StanceCodeEnum32 {
    DETAINED = 15
 };
 
-// TrailingEffectsCodeEnum32 -- 
+// TrailingEffectsCodeEnum32 --
 enum TrailingEffectsCodeEnum32 {
     NO_TRAIL = 0,
     SMALL_TRAIL = 1,
@@ -285,7 +285,7 @@ enum TrailingEffectsCodeEnum32 {
     LARGE_TRAIL = 3,
 };
 
-// Weapon State -- 
+// Weapon State --
 enum WeaponStateEnum32 {
     NO_WEAPON = 0,
     STOWED = 1,
@@ -364,7 +364,7 @@ enum WarheadTypeEnum16 {
     BiologicalToxin = 9500
 };
 
-//// Articulated Type -- 
+//// Articulated Type --
 //enum ArticulatedTypeEnum {
 //    ARTICULATED_TYPE_OTHER = 41,
 //    Rudder = 42,
@@ -522,7 +522,7 @@ struct EntityIdentifierStruct {
     FederateIdentifierStruct federateIdentifier;
     RTI::UShort     entityNumber;
 };
-  
+
 // EventIdentifierStruct
 struct EventIdentifierStruct {
     EventIdentifierStruct() { eventCount = 0; issuingObjectIdentifier.id[0] = '\0'; }
@@ -679,13 +679,13 @@ struct VectoringNozzleSystemDataStruct {
 //   ArticulatedParameterStruct() : parameterValue() {
 //       partAttachedTo = 0; articulatedParameterChange = 0;
 //       articulatedParameterType = ARTICULATED_TYPE_OTHER;
-//       parameterType = PARAMETER_TYPE_DUMMY; 
+//       parameterType = PARAMETER_TYPE_DUMMY;
 //   }
 //   short               partAttachedTo;
-//   unsigned char       articulatedParameterChange; 
-//   ArticulatedTypeEnum articulatedParameterType; 
-//   ParameterValueType  parameterValue; 
-//   ParameterTypeEnum   parameterType; 
+//   unsigned char       articulatedParameterChange;
+//   ArticulatedTypeEnum articulatedParameterType;
+//   ParameterValueType  parameterValue;
+//   ParameterTypeEnum   parameterType;
 //};
 
 
@@ -712,7 +712,7 @@ struct VectoringNozzleSystemDataStruct {
 // ---
 
 class BaseEntity : public Basic::Object {
-   DECLARE_SUBCLASS(BaseEntity,Basic::Object)
+   DECLARE_SUBCLASS(BaseEntity, Basic::Object)
 public:
    BaseEntity();
 
@@ -741,62 +741,62 @@ public:
 // A base class of all discrete platform scenario domain participant
 // ---
 class PhysicalEntity : public BaseEntity {
-    DECLARE_SUBCLASS(PhysicalEntity,BaseEntity)
+    DECLARE_SUBCLASS(PhysicalEntity, BaseEntity)
 public:
     PhysicalEntity();
 
-    static const char* getClassFedName() { return "BaseEntity.PhysicalEntity"; }
+    static const char* getClassFedName()                                     { return "BaseEntity.PhysicalEntity"; }
 
-    static const char* getAcousticSignatureIndexAttributeFedName()   { return "AcousticSignatureIndex"; }
-    static const char* getAlternateEntityTypeAttributeFedName()     { return "AlternateEntityType"; }
+    static const char* getAcousticSignatureIndexAttributeFedName()           { return "AcousticSignatureIndex"; }
+    static const char* getAlternateEntityTypeAttributeFedName()              { return "AlternateEntityType"; }
     //static const char* getArticulatedParametersArrayAttributeFedName() { return "ArticulatedParametersArray"; }
-    static const char* getCamouflageTypeAttributeFedName()          { return "CamouflageType"; }
-    static const char* getDamageStateAttributeFedName()             { return "DamageState"; }
-    static const char* getEngineSmokeOnAttributeFedName()           { return "EngineSmokeOn"; }
-    static const char* getFirePowerDisabledAttributeFedName()       { return "FirePowerDisabled"; }
-    static const char* getFlamesPresentAttributeFedName()           { return "FlamesPresent"; }
-    static const char* getForceIdentifierAttributeFedName()         { return "ForceIdentifier"; }
-    static const char* getHasAmmunitionSupplyCapAttributeFedName()  { return "HasAmmunitionSupplyCap"; }
-    static const char* getHasFuelSupplyCapAttributeFedName()        { return "HasFuelSupplyCap"; }
-    static const char* getHasRecoveryCapAttributeFedName()          { return "HasRecoveryCap"; }
-    static const char* getHasRepairCapAttributeFedName()            { return "HasRepairCap"; }
-    static const char* getImmobilizedAttributeFedName()             { return "Immobilized"; }
-    static const char* getInfraredSignatureIndexAttributeFedName()  { return "InfraredSignatureIndex"; }
-    static const char* getIsConcealedAttributeFedName()             { return "IsConcealed"; }
-    static const char* getLiveEntityMeasuredSpeedAttributeFedName() { return "LiveEntityMeasuredSpeed"; }
-    static const char* getMarkingAttributeFedName()                 { return "Marking"; }
-    static const char* getPowerPlantOnAttributeFedName()            { return "PowerPlantOn"; }
-    static const char* getPropulsionSystemsDataAttributeFedName()   { return "PropulsionSystemsData"; }
-    static const char* getRadarCrossSectionSignatureIndexAttributeFedName() { return "RadarCrossSectionSignatureIndex"; }
-    static const char* getSmokePlumePresentAttributeFedName()       { return "SmokePlumePresent"; }
-    static const char* getTentDeployedAttributeFedName()            { return "TentDeployed"; }
-    static const char* getTrailingEffectsCodeAttributeFedName()     { return "TrailingEffectsCode"; }
-    static const char* getVectoringNozzleSystemDataAttributeFedName() { return "VectoringNozzleSystemData"; }
+    static const char* getCamouflageTypeAttributeFedName()                   { return "CamouflageType"; }
+    static const char* getDamageStateAttributeFedName()                      { return "DamageState"; }
+    static const char* getEngineSmokeOnAttributeFedName()                    { return "EngineSmokeOn"; }
+    static const char* getFirePowerDisabledAttributeFedName()                { return "FirePowerDisabled"; }
+    static const char* getFlamesPresentAttributeFedName()                    { return "FlamesPresent"; }
+    static const char* getForceIdentifierAttributeFedName()                  { return "ForceIdentifier"; }
+    static const char* getHasAmmunitionSupplyCapAttributeFedName()           { return "HasAmmunitionSupplyCap"; }
+    static const char* getHasFuelSupplyCapAttributeFedName()                 { return "HasFuelSupplyCap"; }
+    static const char* getHasRecoveryCapAttributeFedName()                   { return "HasRecoveryCap"; }
+    static const char* getHasRepairCapAttributeFedName()                     { return "HasRepairCap"; }
+    static const char* getImmobilizedAttributeFedName()                      { return "Immobilized"; }
+    static const char* getInfraredSignatureIndexAttributeFedName()           { return "InfraredSignatureIndex"; }
+    static const char* getIsConcealedAttributeFedName()                      { return "IsConcealed"; }
+    static const char* getLiveEntityMeasuredSpeedAttributeFedName()          { return "LiveEntityMeasuredSpeed"; }
+    static const char* getMarkingAttributeFedName()                          { return "Marking"; }
+    static const char* getPowerPlantOnAttributeFedName()                     { return "PowerPlantOn"; }
+    static const char* getPropulsionSystemsDataAttributeFedName()            { return "PropulsionSystemsData"; }
+    static const char* getRadarCrossSectionSignatureIndexAttributeFedName()  { return "RadarCrossSectionSignatureIndex"; }
+    static const char* getSmokePlumePresentAttributeFedName()                { return "SmokePlumePresent"; }
+    static const char* getTentDeployedAttributeFedName()                     { return "TentDeployed"; }
+    static const char* getTrailingEffectsCodeAttributeFedName()              { return "TrailingEffectsCode"; }
+    static const char* getVectoringNozzleSystemDataAttributeFedName()        { return "VectoringNozzleSystemData"; }
 
-   RTI::Short   acousticSignatureIndex;   // Index used to obtain the acoustics (sound through air) signature state of the entity
-   EntityTypeStruct alternateEntityType;  // The category of entity to be used when viewed by entities on the "opposite" side.
+   RTI::Short   acousticSignatureIndex;                       // Index used to obtain the acoustics (sound through air) signature state of the entity
+   EntityTypeStruct alternateEntityType;                      // The category of entity to be used when viewed by entities on the "opposite" side.
    //ArticulatedParameterStruct ArticulatedParametersArray; // << not supported yet >>
-   CamouflageEnum32     camouflageType;   // The type of camouflage in use (if any).
-   DamageStatusEnum32   damageState;      // The state of damage of the entity.
-   RTI::Boolean         engineSmokeOn;    // Whether the entity's engine is generating smoke or not.
-   RTI::Boolean         firePowerDisabled;   // Whether the entity's main weapon system has been disabled or not.
-   RTI::Boolean         flamesPresent;    // Whether the entity is on fire (with visible flames) or not.
-   ForceIdentifierEnum8 forceIdentifier;  // The identification of the force that the entity belongs to.
-   RTI::Boolean         hasAmmunitionSupplyCap; // Whether the entity has the capability to supply other entities with ammunition.
-   RTI::Boolean         hasFuelSupplyCap; // Whether the entity has the capability to supply other entities with fuel or not.
-   RTI::Boolean         hasRecoveryCap;   // Whether the entity has the capability to recover other entities or not.
-   RTI::Boolean         hasRepairCap;     // Whether the entity has the capability to repair other entities or not.
-   RTI::Boolean         immobilized;      // Whether the entity is immobilized or not.
-   RTI::Short           infraredSignatureIndex; // Index used to obtain the infra-red signature state of the entity
-   RTI::Boolean         isConcealed;             // Whether the entity is concealed or not.
-   RTI::UShort          liveEntityMeasuredSpeed; // The entity's own measurement of speed (e.g. air speed for aircraft)
-   MarkingStruct        marking;          // A unique marking or combination of characters used to distinguish the entity from other entities.
-   RTI::Boolean         powerPlantOn;     // Whether the entity's power plant is on or not.
-   PropulsionSystemDataStruct propulsionSystemsData;  // The basic operating data of the propulsion systems aboard the entity
-   RTI::Short radarCrossSectionSignatureIndex; // Index used to obtain the radar cross section signature state of the entity
-   RTI::Boolean         smokePlumePresent;   // Whether the entity is generating smoke or not (intentional or unintentional).
-   RTI::Boolean         tentDeployed;        // Whether the entity has deployed tent or not.
-   TrailingEffectsCodeEnum32   trailingEffectsCode;   // The type and size of any trail that the entity is making.
+   CamouflageEnum32     camouflageType;                       // The type of camouflage in use (if any).
+   DamageStatusEnum32   damageState;                          // The state of damage of the entity.
+   RTI::Boolean         engineSmokeOn;                        // Whether the entity's engine is generating smoke or not.
+   RTI::Boolean         firePowerDisabled;                    // Whether the entity's main weapon system has been disabled or not.
+   RTI::Boolean         flamesPresent;                        // Whether the entity is on fire (with visible flames) or not.
+   ForceIdentifierEnum8 forceIdentifier;                      // The identification of the force that the entity belongs to.
+   RTI::Boolean         hasAmmunitionSupplyCap;               // Whether the entity has the capability to supply other entities with ammunition.
+   RTI::Boolean         hasFuelSupplyCap;                     // Whether the entity has the capability to supply other entities with fuel or not.
+   RTI::Boolean         hasRecoveryCap;                       // Whether the entity has the capability to recover other entities or not.
+   RTI::Boolean         hasRepairCap;                         // Whether the entity has the capability to repair other entities or not.
+   RTI::Boolean         immobilized;                          // Whether the entity is immobilized or not.
+   RTI::Short           infraredSignatureIndex;               // Index used to obtain the infra-red signature state of the entity
+   RTI::Boolean         isConcealed;                          // Whether the entity is concealed or not.
+   RTI::UShort          liveEntityMeasuredSpeed;              // The entity's own measurement of speed (e.g. air speed for aircraft)
+   MarkingStruct        marking;                              // A unique marking or combination of characters used to distinguish the entity from other entities.
+   RTI::Boolean         powerPlantOn;                         // Whether the entity's power plant is on or not.
+   PropulsionSystemDataStruct propulsionSystemsData;          // The basic operating data of the propulsion systems aboard the entity
+   RTI::Short radarCrossSectionSignatureIndex;                // Index used to obtain the radar cross section signature state of the entity
+   RTI::Boolean         smokePlumePresent;                    // Whether the entity is generating smoke or not (intentional or unintentional).
+   RTI::Boolean         tentDeployed;                         // Whether the entity has deployed tent or not.
+   TrailingEffectsCodeEnum32   trailingEffectsCode;           // The type and size of any trail that the entity is making.
    VectoringNozzleSystemDataStruct vectoringNozzleSystemData; // The type and size of any trail that the entity is making.
 };
 
@@ -808,17 +808,17 @@ public:
 // "A living military platform (human or not)"
 // ---
 class Lifeform : public PhysicalEntity {
-    DECLARE_SUBCLASS(Lifeform,PhysicalEntity)
+    DECLARE_SUBCLASS(Lifeform, PhysicalEntity)
 public:
     Lifeform();
 
-    static const char* getClassFedName() { return "BaseEntity.PhysicalEntity.Lifeform"; }
+    static const char* getClassFedName()                          { return "BaseEntity.PhysicalEntity.Lifeform"; }
 
-    static const char* getFlashLightsOnAttributeFedName()    { return "FlashLightsOn"; }
-    static const char* getStanceCodeAttributeFedName()    { return "StanceCode"; }
+    static const char* getFlashLightsOnAttributeFedName()         { return "FlashLightsOn"; }
+    static const char* getStanceCodeAttributeFedName()            { return "StanceCode"; }
     static const char* getPrimaryWeaponStateAttributeFedName()    { return "PrimaryWeaponState"; }
     static const char* getSecondaryWeaponStateAttributeFedName()  { return "SecondaryWeaponState"; }
-    static const char* getComplianceStateAttributeFedName()    { return "ComplianceState"; }
+    static const char* getComplianceStateAttributeFedName()       { return "ComplianceState"; }
 
    RTI::Boolean         flashLightsOn;       // Whether the lifeform's flash lights are on or not.
    StanceCodeEnum32     stanceCode;          // The stance of the lifeform.
@@ -827,7 +827,7 @@ public:
    ComplianceStateEnum32 complianceState;    // The compliance of the lifeform.
 
 };
-  
+
 // ---
 // Human Structure (PS)
 //  -- subclass of Lifeform
@@ -835,10 +835,10 @@ public:
 // "A human lifeform"
 // ---
 class Human : public Lifeform {
-    DECLARE_SUBCLASS(Human,Lifeform)
+    DECLARE_SUBCLASS(Human, Lifeform)
 public:
     Human();
-    static const char* getClassFedName() { return "BaseEntity.PhysicalEntity.Lifeform.Human"; }
+    static const char* getClassFedName()      { return "BaseEntity.PhysicalEntity.Lifeform.Human"; }
 };
 
 
@@ -849,10 +849,10 @@ public:
 // "An animal or other non-human lifeform"
 // ---
 class NonHuman : public Lifeform {
-    DECLARE_SUBCLASS(NonHuman,Lifeform)
+    DECLARE_SUBCLASS(NonHuman, Lifeform)
 public:
     NonHuman();
-    static const char* getClassFedName() { return "BaseEntity.PhysicalEntity.Lifeform.NonHuman"; }
+    static const char* getClassFedName()      { return "BaseEntity.PhysicalEntity.Lifeform.NonHuman"; }
 };
 
 
@@ -864,7 +864,7 @@ public:
 //  or nuclear, biological or chemical material for use in military operations, including demolitions."
 // ---
 class Munition : public PhysicalEntity {
-   DECLARE_SUBCLASS(Munition,PhysicalEntity)
+   DECLARE_SUBCLASS(Munition, PhysicalEntity)
 public:
    Munition();
    static const char* getClassFedName() { return "BaseEntity.PhysicalEntity.Munition"; }
@@ -883,10 +883,10 @@ public:
 //  or weapon systems may be mounted."
 // ---
 class Platform : public PhysicalEntity {
-   DECLARE_SUBCLASS(Platform,PhysicalEntity)
+   DECLARE_SUBCLASS(Platform, PhysicalEntity)
 public:
    Platform();
-   static const char* getClassFedName() { return "BaseEntity.PhysicalEntity.Platform"; }
+   static const char* getClassFedName()                           { return "BaseEntity.PhysicalEntity.Platform"; }
 
    static const char* getAfterburnerOnAttributeFedName()          { return "AfterburnerOn"; }
    static const char* getAntiCollisionLightsOnAttributeFedName()  { return "AntiCollisionLightsOn"; }
@@ -932,10 +932,10 @@ public:
 //  balloons, etc.  This includes the entities when they are on the ground."
 // ---
 class Aircraft : public Platform {
-    DECLARE_SUBCLASS(Aircraft,Platform)
+    DECLARE_SUBCLASS(Aircraft, Platform)
 public:
     Aircraft();
-   static const char* getClassFedName() { return "BaseEntity.PhysicalEntity.Platform.Aircraft"; }
+   static const char* getClassFedName()       { return "BaseEntity.PhysicalEntity.Platform.Aircraft"; }
 };
 
 
@@ -946,10 +946,10 @@ public:
 // "A platform entity that can operate both on the land and the sea."
 // ---
 class AmphibiousVehicle : public Platform {
-    DECLARE_SUBCLASS(AmphibiousVehicle,Platform)
+    DECLARE_SUBCLASS(AmphibiousVehicle, Platform)
 public:
     AmphibiousVehicle();
-   static const char* getClassFedName() { return "BaseEntity.PhysicalEntity.Platform.AmphibiousVehicle"; }
+   static const char* getClassFedName()      { return "BaseEntity.PhysicalEntity.Platform.AmphibiousVehicle"; }
 };
 
 
@@ -960,7 +960,7 @@ public:
 // "A platform entity that operates wholly on the surface of the earth."
 // ---
 class GroundVehicle : public Platform {
-    DECLARE_SUBCLASS(GroundVehicle,Platform)
+    DECLARE_SUBCLASS(GroundVehicle, Platform)
 public:
     GroundVehicle();
    static const char* getClassFedName() { return "BaseEntity.PhysicalEntity.Platform.GroundVehicle"; }
@@ -975,7 +975,7 @@ public:
 //  combinations explicitly defined as subclasses of the superclass of this class)."
 // ---
 class MultiDomainPlatform : public Platform {
-    DECLARE_SUBCLASS(MultiDomainPlatform,Platform)
+    DECLARE_SUBCLASS(MultiDomainPlatform, Platform)
 public:
     MultiDomainPlatform();
    static const char* getClassFedName() { return "BaseEntity.PhysicalEntity.Platform.MultiDomainPlatform"; }
@@ -989,7 +989,7 @@ public:
 // "A platform entity that operates mainly in space."
 // ---
 class Spacecraft : public Platform {
-    DECLARE_SUBCLASS(Spacecraft,Platform)
+    DECLARE_SUBCLASS(Spacecraft, Platform)
 public:
     Spacecraft();
    static const char* getClassFedName() { return "BaseEntity.PhysicalEntity.Platform.Spacecraft"; }
@@ -1003,7 +1003,7 @@ public:
 // "A platform entity that operates either on the surface of the sea, or beneath it."
 // ---
 class SubmersibleVessel : public Platform {
-    DECLARE_SUBCLASS(SubmersibleVessel,Platform)
+    DECLARE_SUBCLASS(SubmersibleVessel, Platform)
 public:
     SubmersibleVessel();
    static const char* getClassFedName() { return "BaseEntity.PhysicalEntity.Platform.SubmersibleVessel"; }
@@ -1017,7 +1017,7 @@ public:
 // "A platform entity that operates wholly on the surface of the sea."
 // ---
 class SurfaceVessel : public Platform {
-    DECLARE_SUBCLASS(SurfaceVessel,Platform)
+    DECLARE_SUBCLASS(SurfaceVessel, Platform)
 public:
     SurfaceVessel();
    static const char* getClassFedName() { return "BaseEntity.PhysicalEntity.Platform.SurfaceVessel"; }
@@ -1034,7 +1034,7 @@ public:
 // "Communicates information associated with the firing or launch of a munition."
 // ---
 struct WeaponFire {
-    static const char* getInteractionFedName() { return "WeaponFire"; }
+    static const char* getInteractionFedName()                          { return "WeaponFire"; }
 
     static const char* getEventIdentifierParameterFedName()             { return "EventIdentifier"; }
     static const char* getFireControlSolutionRangeParameterFedName()    { return "FireControlSolutionRange"; }
@@ -1075,24 +1075,24 @@ struct WeaponFire {
 // "Communicates information associated with the impact or detonation of a munition"
 // ---
 struct MunitionDetonation {
-   static const char* getInteractionFedName() { return "MunitionDetonation"; }
+   static const char* getInteractionFedName()                         { return "MunitionDetonation"; }
 
    //static const char* getArticulatedPartDataParameterFedName()      { return "ArticulatedPartData"; }
-   static const char* getDetonationLocationParameterFedName()      { return "DetonationLocation"; }
-   static const char* getDetonationResultCodeParameterFedName()    { return "DetonationResultCode"; }
-   static const char* getEventIdentifierParameterFedName()         { return "EventIdentifier"; }
-   static const char* getFiringObjectIdentifierParameterFedName()  { return "FiringObjectIdentifier"; }
-   static const char* getFinalVelocityVectorParameterFedName()     { return "FinalVelocityVector"; }
-   static const char* getFuseTypeParameterFedName()                { return "FuseType"; }
-   static const char* getMunitionObjectIdentifierParameterFedName() { return "MunitionObjectIdentifier"; }
-   static const char* getMunitionTypeParameterFedName()            { return "MunitionType"; }
-   static const char* getQuantityFiredParameterFedName()           { return "QuantityFired"; }
-   static const char* getRateOfFireParameterFedName()              { return "RateOfFire"; }
+   static const char* getDetonationLocationParameterFedName()         { return "DetonationLocation"; }
+   static const char* getDetonationResultCodeParameterFedName()       { return "DetonationResultCode"; }
+   static const char* getEventIdentifierParameterFedName()            { return "EventIdentifier"; }
+   static const char* getFiringObjectIdentifierParameterFedName()     { return "FiringObjectIdentifier"; }
+   static const char* getFinalVelocityVectorParameterFedName()        { return "FinalVelocityVector"; }
+   static const char* getFuseTypeParameterFedName()                   { return "FuseType"; }
+   static const char* getMunitionObjectIdentifierParameterFedName()   { return "MunitionObjectIdentifier"; }
+   static const char* getMunitionTypeParameterFedName()               { return "MunitionType"; }
+   static const char* getQuantityFiredParameterFedName()              { return "QuantityFired"; }
+   static const char* getRateOfFireParameterFedName()                 { return "RateOfFire"; }
    static const char* getRelativeDetonationLocationParameterFedName() { return "RelativeDetonationLocation"; }
-   static const char* getTargetObjectIdentifierParameterFedName()  { return "TargetObjectIdentifier"; }
-   static const char* getWarheadTypeParameterFedName()             { return "WarheadType"; }
+   static const char* getTargetObjectIdentifierParameterFedName()     { return "TargetObjectIdentifier"; }
+   static const char* getWarheadTypeParameterFedName()                { return "WarheadType"; }
 
-   //ArticulatedParameterStruct articulatedPartData; // The set of articulated parts affected by the detonation (including 
+   //ArticulatedParameterStruct articulatedPartData; // The set of articulated parts affected by the detonation (including
    WorldLocationStruct detonationLocation;      // The location, in the world coordinate system, of the detonation.
    DetonationResultCodeEnum8 detonationResultCode; // The type of detonation (including no detonation).
    EventIdentifierStruct eventIdentifier;       // An ID, generated by the issuing federate, used to associated related fire and detonation events.

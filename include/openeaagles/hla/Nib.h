@@ -17,27 +17,27 @@ namespace Hla {
 class Ambassador;
 
 //==============================================================================
-// Class:       Hla::Nib
-// Base class:  Basic::Object -> Simulation::Nib -> Hla::Nib
+// Class: Hla::Nib
+// Base class: Basic::Object -> Simulation::Nib -> Hla::Nib
 // Description: Unique NIB for HLA support.
 //
 // Note: updateRequired[] flags are used ...
 //        -- (input)  an attribute has received a value (via reflectAttributeValues())
 //        -- (output) an attribute update is required (via provideAttributeValueUpdate())
 //==============================================================================
-class Nib : public Simulation::Nib  
+class Nib : public Simulation::Nib
 {
-   DECLARE_SUBCLASS(Nib,Simulation::Nib)
+   DECLARE_SUBCLASS(Nib, Simulation::Nib)
 
 public:
    Nib(const Simulation::NetIO::IoType ioType);
 
    // Returns true if the object has been registered
-   bool isRegistered() const                       { return (handle != 0); }
+   bool isRegistered() const                                { return (handle != 0); }
 
    // RTI Object Handle
-   bool isObjectHandle(RTI::ObjectHandle h) const  { return h == handle; }
-   RTI::ObjectHandle getObjectHandle() const       { return handle; }
+   bool isObjectHandle(RTI::ObjectHandle h) const           { return h == handle; }
+   RTI::ObjectHandle getObjectHandle() const                { return handle; }
    virtual void setObjectHandle(RTI::ObjectHandle h);
 
    // Object class index
@@ -46,7 +46,7 @@ public:
    virtual void setClassIndex(const unsigned int idx);
 
    // Object name
-   const char* getObjectName() const               { return oname; }
+   const char* getObjectName() const                        { return oname; }
    virtual void setObjectName(const char* s);
 
    // Makes a default RTI name
@@ -75,9 +75,9 @@ public:
 protected:
     virtual void clearAllAttributeUpdateEnabledFlags();
     virtual void clearAllAttributeUpdateRequiredFlags();
-    
+
 private:
-    Basic::String  oname;                       // Our object name 
+    Basic::String  oname;                       // Our object name
     RTI::ObjectHandle handle;                   // Our object handle
     unsigned int objectClassIndex;              // We are of this FOM object class
     bool updateEnabled[NetIO::MAX_ATTRIBUTES];  // If true, an attribute update is enabled

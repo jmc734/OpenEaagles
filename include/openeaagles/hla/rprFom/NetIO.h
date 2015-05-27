@@ -12,24 +12,27 @@
 #include "openeaagles/hla/NetIO.h"
 
 namespace Eaagles {
-   namespace Simulation { class Player; }
+
+namespace Simulation { class Player; }
 
 namespace Network {
+
 namespace Hla {
-   class Ambassador;
+
+class Ambassador;
 
 namespace RprFom {
-   class BaseEntity;
-   class EmitterBeam;
-   class Nib;
-   class Ntm;
 
+class BaseEntity;
+class EmitterBeam;
+class Nib;
+class Ntm;
 
 //==============================================================================
 // Class: Hla::RprFom::NetIO
 // Form Name: RprFomNetIO
 //==============================================================================
-class NetIO : public Hla::NetIO  
+class NetIO : public Hla::NetIO
 {
     DECLARE_SUBCLASS(NetIO, Hla::NetIO)
 
@@ -51,7 +54,7 @@ public:
         SPACECRAFT_CLASS = 12,
         SUBMERSIBLE_VESSEL_CLASS = 13,
         SURFACE_VESSEL_CLASS = 14,
-        
+
         NUM_OBJECT_CLASSES = 14
     };
 
@@ -63,7 +66,7 @@ public:
         ENTITY_IDENTIFIER_AI = 2,
         SPATIAL_AI = 3,
         RELATIVE_SPATIAL_AI = 4,
-        
+
         // Physical Entity arguments indexes (AI)
         ACOUSTIC_SIGNATURE_INDEX_AI = 5,
         ALTERNATEENTITY_TYPE_AI = 6,
@@ -89,17 +92,17 @@ public:
         TENT_DEPLOYED_AI = 26,
         TRAILING_EFFECTS_CODE_AI = 27,
         VECTORING_NOZZLE_SYSTEM_DATA_AI = 28,
-        
+
         // Lifeform Entity arguments indexes (AI)
         FLASH_LIGHTS_ON_AI = 29,
         STANCE_CODE_AI = 30,
         PRIMARY_WEAPON_STATE_AI = 31,
         SECONDARY_WEAPON_STATE_AI = 32,
         COMPLIANCE_STATE_AI = 33,
-        
+
         // Munition Entity (MUN) arguments indexes (AI)
         LAUNCHER_FLASH_PRESENT_AI = 34,
-        
+
         // Platform Entity (PLAT) arguments indexes (AI)
         AFTERBURNER_ON_AI = 35,
         ANTI_COLLISION_LIGHTS_ON_AI = 36,
@@ -117,15 +120,15 @@ public:
         RUNNING_LIGHTS_ON_AI = 48,
         SPOT_LIGHTS_ON_AI = 49,
         TAIL_LIGHTS_ON_AI = 50,
-        
+
         NUM_OBJECT_ATTRIBUTES = 50
     };
-    
+
     // Interaction Class Indexes
     enum {
         WEAPON_FIRE_INTERACTION = 1,
         MUNITION_DETONATION_INTERACTION = 2,
-        
+
         NUM_INTERACTION_CLASSES = 2
     };
 
@@ -160,7 +163,7 @@ public:
         RELATIVE_DETONATION_LOCATION_MD_PI = 24,
         TARGET_OBJECT_IDENTIFIER_MD_PI = 25,
         WARHEAD_TYPE_MD_PI = 26,
-        
+
         NUM_INTERACTION_PARAMETER = 26
     };
 
@@ -178,7 +181,7 @@ public:
    };
 
 public:
-    NetIO();
+   NetIO();
 
    // Finds the Ntm by entity type codes
    virtual const Ntm* findNtmByTypeCodes(
@@ -207,7 +210,7 @@ public:
     // Simulation::NetIO interface
     virtual Simulation::Nib* createNewOutputNib(Simulation::Player* const player);
     virtual Simulation::NetIO::NtmInputNode* rootNtmInputNodeFactory() const;
-    
+
 protected:
     virtual bool receiveWeaponFire(const RTI::ParameterHandleValuePairSet& theParameters);
     virtual bool receiveMunitionDetonation(const RTI::ParameterHandleValuePairSet& theParameters);
@@ -218,7 +221,7 @@ protected:
 
     // NetIO interface (callbacks)
     virtual bool publishAndSubscribe();
-    
+
     // Simulation::NetIO Interface (Callbacks)
     virtual void processInputList();    // Update players/systems from the Input-list
     virtual Simulation::Nib* nibFactory(const Simulation::NetIO::IoType ioType);   // Create a new RprFom::Nib
