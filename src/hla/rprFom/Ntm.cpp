@@ -67,7 +67,7 @@ bool Ntm::copyEntityType(Simulation::Nib* const targetNib) const
 {
    bool ok = false;
    Nib* tgtNib = dynamic_cast<Nib*>(targetNib);
-   if (tgtNib != 0) {
+   if (tgtNib != nullptr) {
       ok = tgtNib->setEntityType(kind, domain, country, category, subcategory, specific, extra);
    }
    return ok;
@@ -108,7 +108,7 @@ bool Ntm::setEntityType(
 bool Ntm::setSlotEntityType(const Basic::List* const msg)
 {
    bool ok = false;
-   if (msg != 0) {
+   if (msg != nullptr) {
       int values[7];
       int n = msg->getNumberList(values, 7);
       if (n >= 4) {
@@ -116,7 +116,7 @@ bool Ntm::setSlotEntityType(const Basic::List* const msg)
          ok = true;  // First, assume they're valid
          unsigned char k = 0;    // Kind
          if (values[0] >= 0x0 && values[0] <= 0xff) {
-            k = (unsigned char) values[0];
+            k = static_cast<unsigned char>(values[0]);
          }
          else {
             std::cerr << "Ntm::setSlotEntityType: Invalid kind: [ 0 .. 255 ]" << std::endl;
@@ -125,7 +125,7 @@ bool Ntm::setSlotEntityType(const Basic::List* const msg)
 
          unsigned char d = 0;    // Domain
          if (values[1] >= 0x0 && values[1] <= 0xff) {
-            d = (unsigned char) values[1];
+            d = static_cast<unsigned char>(values[1]);
          }
          else {
             std::cerr << "Ntm::setSlotEntityType: Invalid domain: [ 0 .. 255 ]" << std::endl;
@@ -143,7 +143,7 @@ bool Ntm::setSlotEntityType(const Basic::List* const msg)
 
          unsigned char c = 0;    // Category
          if (values[3] >= 0x0 && values[3] <= 0xff) {
-            c = (unsigned char) values[3];
+            c = static_cast<unsigned char>(values[3]);
          }
          else {
             std::cerr << "Ntm::setSlotEntityType: Invalid category: [ 0 .. 255 ]" << std::endl;
@@ -156,7 +156,7 @@ bool Ntm::setSlotEntityType(const Basic::List* const msg)
          unsigned char ex = 0;   // Extra
          if (n >= 5) {
             if (values[4] >= 0x0 && values[4] <= 0xff) {
-               sc = (unsigned char) values[4];
+               sc = static_cast<unsigned char>(values[4]);
             }
             else {
                std::cerr << "Ntm::setSlotEntityType: Invalid subcategory: [ 0 .. 255 ]" << std::endl;
@@ -165,7 +165,7 @@ bool Ntm::setSlotEntityType(const Basic::List* const msg)
          }
          if (n >= 6) {
             if (values[5] >= 0x0 && values[5] <= 0xff) {
-               sp = (unsigned char) values[5];
+               sp = static_cast<unsigned char>(values[5]);
             }
             else {
                std::cerr << "Ntm::setSlotEntityType: Invalid specific: [ 0 .. 255 ]" << std::endl;
@@ -174,7 +174,7 @@ bool Ntm::setSlotEntityType(const Basic::List* const msg)
          }
          if (n >= 7) {
             if (values[6] >= 0x0 && values[6] <= 0xff) {
-               ex = (unsigned char) values[6];
+               ex = static_cast<unsigned char>(values[6]);
             }
             else {
                std::cerr << "Ntm::setSlotEntityType: Invalid extra: [ 0 .. 255 ]" << std::endl;
@@ -217,13 +217,13 @@ std::ostream& Ntm::serialize(std::ostream& sout, const int i, const bool slotsOn
 
    indent(sout,i+j);
    sout << "entityType: [ ";
-   sout << int(kind) << " ";
-   sout << int(domain) << " ";
-   sout << int(country) << " ";
-   sout << int(category) << " ";
-   sout << int(subcategory) << " ";
-   sout << int(specific) << " ";
-   sout << int(extra) << " ";
+   sout << static_cast<int>(kind) << " ";
+   sout << static_cast<int>(domain) << " ";
+   sout << static_cast<int>(country) << " ";
+   sout << static_cast<int>(category) << " ";
+   sout << static_cast<int>(subcategory) << " ";
+   sout << static_cast<int>(specific) << " ";
+   sout << static_cast<int>(extra) << " ";
    sout << "]" << std::endl;
 
    BaseClass::serialize(sout,i+j,true);

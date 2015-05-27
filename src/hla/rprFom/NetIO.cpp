@@ -42,7 +42,7 @@ public:
          CATEGORY_LVL, SUBCATEGORY_LVL, SPECIFIC_LVL, EXTRA_LVL };
 
 public:
-   NtmInputNode(const unsigned int level, const unsigned int code, const Ntm* ntm = 0);
+   NtmInputNode(const unsigned int level, const unsigned int code, const Ntm* ntm = nullptr);
 
    virtual const Ntm* findNtmByTypeCodes(
          const unsigned char  kind,
@@ -342,14 +342,14 @@ EMPTY_SERIALIZER(NtmInputNode)
 //------------------------------------------------------------------------------
 Simulation::NetIO::NtmInputNode* NetIO::rootNtmInputNodeFactory() const
 {
-   return new Hla::RprFom::NtmInputNode(Hla::RprFom::NtmInputNode::ROOT_LVL,0); // root level
+   return new Hla::RprFom::NtmInputNode(Hla::RprFom::NtmInputNode::ROOT_LVL, 0); // root level
 }
 
 //------------------------------------------------------------------------------
 // Class support functions
 //------------------------------------------------------------------------------
 NtmInputNode::NtmInputNode(const unsigned int l, const unsigned int c, const Ntm* ntm)
-   : level(l), code(c), ourNtm(0), subnodeList(0)
+   : level(l), code(c), ourNtm(nullptr), subnodeList(nullptr)
 {
    STANDARD_CONSTRUCTOR()
 

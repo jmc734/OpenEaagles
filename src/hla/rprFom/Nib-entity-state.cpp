@@ -318,7 +318,7 @@ void Nib::entityState2Nib()
             // and everyone else is gray.
             setSide(Simulation::Player::GRAY);
          }
-         setAttributeUpdateRequiredFlag(NetIO::FORCE_IDENTIFIER_AI,false);
+         setAttributeUpdateRequiredFlag(NetIO::FORCE_IDENTIFIER_AI, false);
       }
 
    }
@@ -458,7 +458,7 @@ void Nib::updateBasicEntity(
                sizeof(EntityTypeStruct)
             );
 
-         setAttributeUpdateRequiredFlag(NetIO::ENTITY_TYPE_AI,false);
+         setAttributeUpdateRequiredFlag(NetIO::ENTITY_TYPE_AI, false);
       }
 
       // Spatial Structure

@@ -30,7 +30,7 @@ bool Nib::weaponFireMsgFactory(const LCreal)
    if (!isRegistered()) return false;
 
    // Get our Simulation::NetIO
-   NetIO* netIO = (NetIO*)(getNetIO());
+   NetIO* netIO = static_cast<NetIO*>(getNetIO());
 
    // Create the parameter/value set
    RTI::ParameterHandleValuePairSet* pParams =
@@ -41,7 +41,7 @@ bool Nib::weaponFireMsgFactory(const LCreal)
 
    // If our player just launched, then it must be a weapon!
    Simulation::Weapon* mPlayer = dynamic_cast<Simulation::Weapon*>(getPlayer());
-   if (mPlayer == 0) return false;  // Early out -- it wasn't a weapon! 
+   if (mPlayer == nullptr) return false;  // Early out -- it wasn't a weapon! 
 
    // ---
    // Event ID
@@ -50,13 +50,13 @@ bool Nib::weaponFireMsgFactory(const LCreal)
    EventIdentifierStruct eventIdentifier;
    Basic::NetHandler::toNetOrder(&eventIdentifier.eventCount, fireEvent);
    lcStrncpy(
-      (char*)&eventIdentifier.issuingObjectIdentifier.id[0], 
+      reinterpret_cast<char*>(&eventIdentifier.issuingObjectIdentifier.id[0]), 
       sizeof(eventIdentifier.issuingObjectIdentifier.id),
       getObjectName(), 
       RTIObjectIdStruct::ID_SIZE );    
    pParams->add(
       netIO->getInteractionParameterHandle(NetIO::EVENT_IDENTIFIER_WF_PI),
-      (char*) &eventIdentifier,
+      reinterpret_cast<char*>(&eventIdentifier),
       sizeof(EventIdentifierStruct) );
    setWeaponFireEvent( fireEvent );  // remember for the detonation interaction
 
@@ -75,7 +75,7 @@ bool Nib::weaponFireMsgFactory(const LCreal)
       Basic::NetHandler::toNetOrder(&firingLocation.z, geocPos[Basic::Nav::IZ]);
       pParams->add(
          netIO->getInteractionParameterHandle(NetIO::FIRING_LOCATION_WF_PI), 
-         (char*) &firingLocation, 
+         reinterpret_cast<char*>(&firingLocation),
          sizeof(WorldLocationStruct) );
 
       // Velocity
@@ -85,7 +85,7 @@ bool Nib::weaponFireMsgFactory(const LCreal)
       Basic::NetHandler::toNetOrder(&initialVelocityVector.zVelocity, geocVel[Basic::Nav::IZ]);
       pParams->add(
          netIO->getInteractionParameterHandle(NetIO::INITIAL_VELOCITY_VECTOR_WF_PI), 
-         (char*) &initialVelocityVector, 
+         reinterpret_cast<char*>(&initialVelocityVector),
          sizeof(VelocityVectorStruct) );
    }
 
@@ -95,13 +95,13 @@ bool Nib::weaponFireMsgFactory(const LCreal)
    {
       RTIObjectIdStruct munitionObjectIdentifier;
       lcStrncpy(
-         (char*)&munitionObjectIdentifier.id[0],
+         reinterpret_cast<char*>(&munitionObjectIdentifier.id[0]),
          sizeof(munitionObjectIdentifier.id),
          getObjectName(),
          RTIObjectIdStruct::ID_SIZE );    
       pParams->add(
          netIO->getInteractionParameterHandle(NetIO::MUNITION_OBJECT_IDENTIFIER_WF_PI),
-         (char*) &munitionObjectIdentifier,
+         reinterpret_cast<char*>(&munitionObjectIdentifier),
          sizeof(RTIObjectIdStruct) );
    }
 
@@ -113,9 +113,9 @@ bool Nib::weaponFireMsgFactory(const LCreal)
    //   If it's not, then check our output list.
    // ---
    {
-      Nib* fNib = 0;
+      Nib* fNib = nullptr;
       Simulation::Player* fPlayer = mPlayer->getLaunchVehicle();
-      if (fPlayer != 0) {
+      if (fPlayer != nullptr) {
          if (fPlayer->isNetworkedPlayer()) {
             fNib = dynamic_cast<Nib*>( fPlayer->getNib() );
          }
@@ -124,16 +124,16 @@ bool Nib::weaponFireMsgFactory(const LCreal)
          }
       }
 
-      if (fNib != 0) {
+      if (fNib != nullptr) {
          RTIObjectIdStruct firingObjectIdentifier;
          lcStrncpy(
-            (char*)&firingObjectIdentifier.id[0],
+            reinterpret_cast<char*>(&firingObjectIdentifier.id[0]),
             sizeof(firingObjectIdentifier.id),
             fNib->getObjectName(),
             RTIObjectIdStruct::ID_SIZE );    
          pParams->add(
             netIO->getInteractionParameterHandle(NetIO::FIRING_OBJECT_IDENTIFIER_WF_PI),
-            (char*) &firingObjectIdentifier,
+            reinterpret_cast<char*>(&firingObjectIdentifier),
             sizeof(RTIObjectIdStruct) );
       }
    }
@@ -146,23 +146,23 @@ bool Nib::weaponFireMsgFactory(const LCreal)
    //   If it's not, then check our output list.
    // ---
    {
-      Nib* tNib = 0;
+      Nib* tNib = nullptr;
       Simulation::Player* tPlayer = mPlayer->getTargetPlayer();
-      if (tPlayer != 0) {
+      if (tPlayer != nullptr) {
          tNib = dynamic_cast<Nib*>( tPlayer->getNib() );
-         if (tNib == 0) tNib = dynamic_cast<Nib*>( netIO->findNib(tPlayer, Simulation::NetIO::OUTPUT_NIB) );
+         if (tNib == nullptr) tNib = dynamic_cast<Nib*>( netIO->findNib(tPlayer, Simulation::NetIO::OUTPUT_NIB) );
       }
 
-      if (tNib != 0) {
+      if (tNib != nullptr) {
          RTIObjectIdStruct targetObjectIdentifier;
          lcStrncpy(
-            (char*)&targetObjectIdentifier.id[0],
+            reinterpret_cast<char*>(&targetObjectIdentifier.id[0]),
             sizeof(targetObjectIdentifier.id),
             tNib->getObjectName(),
             RTIObjectIdStruct::ID_SIZE );    
          pParams->add(
             netIO->getInteractionParameterHandle(NetIO::TARGET_OBJECT_IDENTIFIER_WF_PI),
-            (char*) &targetObjectIdentifier,
+            reinterpret_cast<char*>(&targetObjectIdentifier),
             sizeof(RTIObjectIdStruct) );
       }
    }
@@ -181,7 +181,7 @@ bool Nib::weaponFireMsgFactory(const LCreal)
       munitionType.extra  = getEntityExtra();
       pParams->add(
             netIO->getInteractionParameterHandle(NetIO::MUNITION_TYPE_WF_PI),
-            (char*) &munitionType,
+            reinterpret_cast<char*>(&munitionType),
             sizeof(EntityTypeStruct)
          );
    }
@@ -190,11 +190,11 @@ bool Nib::weaponFireMsgFactory(const LCreal)
    // Fire Control Solution Range (meters)
    // ---
    {
-      float fireControlSolutionRange;
+      float fireControlSolutionRange(0.0);
       Basic::NetHandler::toNetOrder(&fireControlSolutionRange, 0 );
       pParams->add(
          netIO->getInteractionParameterHandle(NetIO::FIRE_CONTROL_SOLUTION_RANGE_WF_PI),
-         (char*) &fireControlSolutionRange,
+         reinterpret_cast<char*>(&fireControlSolutionRange),
          sizeof(float) );
    }
 
@@ -207,7 +207,7 @@ bool Nib::weaponFireMsgFactory(const LCreal)
       Basic::NetHandler::toNetOrder(&netBuffer, fireMissionIndex );
       pParams->add(
          netIO->getInteractionParameterHandle(NetIO::FIRE_MISSION_INDEX_WF_PI),
-         (char*) &netBuffer,
+         reinterpret_cast<char*>(&netBuffer),
          sizeof(unsigned long) );
    }
 
@@ -217,10 +217,10 @@ bool Nib::weaponFireMsgFactory(const LCreal)
    {
       FuseTypeEnum16 fuseType = FuseTypeOther;
       unsigned short netBuffer;
-      Basic::NetHandler::toNetOrder(&netBuffer, (unsigned short)(fuseType) );
+      Basic::NetHandler::toNetOrder(&netBuffer, static_cast<unsigned short>(fuseType) );
       pParams->add(
          netIO->getInteractionParameterHandle(NetIO::FUSE_TYPE_WF_PI),
-         (char*) &netBuffer,
+         reinterpret_cast<char*>(&netBuffer),
          sizeof(unsigned short) );
    }
 
@@ -233,7 +233,7 @@ bool Nib::weaponFireMsgFactory(const LCreal)
       Basic::NetHandler::toNetOrder(&netBuffer, quantityFired );
       pParams->add(
          netIO->getInteractionParameterHandle(NetIO::QUANTITY_FIRED_WF_PI),
-         (char*) &netBuffer,
+         reinterpret_cast<char*>(&netBuffer),
          sizeof(unsigned short) );
    }
 
@@ -246,7 +246,7 @@ bool Nib::weaponFireMsgFactory(const LCreal)
       Basic::NetHandler::toNetOrder(&netBuffer, rateOfFire );
       pParams->add(
          netIO->getInteractionParameterHandle(NetIO::RATE_OF_FIRE_WF_PI),
-         (char*) &netBuffer,
+         reinterpret_cast<char*>(&netBuffer),
          sizeof(unsigned short) );
    }
 
@@ -256,10 +256,10 @@ bool Nib::weaponFireMsgFactory(const LCreal)
    {
       WarheadTypeEnum16 warheadType = WarheadTypeOther;
       unsigned short netBuffer;
-      Basic::NetHandler::toNetOrder(&netBuffer, (unsigned short)(warheadType) );
+      Basic::NetHandler::toNetOrder(&netBuffer, static_cast<unsigned short>(warheadType) );
       pParams->add(
          netIO->getInteractionParameterHandle(NetIO::WARHEAD_TYPE_WF_PI),
-         (char*) &netBuffer,
+         reinterpret_cast<char*>(&netBuffer),
          sizeof(unsigned short) );
    }
 
