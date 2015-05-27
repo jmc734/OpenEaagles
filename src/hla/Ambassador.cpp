@@ -6,10 +6,10 @@
 #include "openeaagles/hla/NetIO.h"
 #include "openeaagles/hla/Nib.h"
 
+#include <iostream>
+
 // turn off the "unreferenced formal parameter" warning.
 #pragma warning(disable:4100)
-
-using namespace std;
 
 namespace Eaagles {
 namespace Network {
@@ -128,7 +128,7 @@ throw (
    //std::cout << "Ambassador:provideAttributeValueUpdate(): ";
    // Find the output object
    NetIO* netIO = getNetIO();
-   Nib* nib = (Nib*)( netIO->findNibByObjectHandle(theObject, NetIO::OUTPUT_NIB) );
+   Nib* nib = static_cast<Nib*>( netIO->findNibByObjectHandle(theObject, NetIO::OUTPUT_NIB) );
 
    if (nib != nullptr) nib->provideAttributeValueUpdate(theAttrs);
    //std::cout << std::endl;
@@ -163,14 +163,14 @@ throw (
 void Ambassador::removeObjectInstance (
         RTI::ObjectHandle          theObject,
   const RTI::FedTime&              theTime,
-  const char                       *theTag,
+  const char*                      theTag,
         RTI::EventRetractionHandle theHandle)
 throw (
    RTI::ObjectNotKnown,
    RTI::InvalidFederationTime,
    RTI::FederateInternalError)
 {
-   removeObjectInstance(theObject,theTag);
+   removeObjectInstance(theObject, theTag);
 }
 
 void Ambassador::removeObjectInstance (
@@ -198,7 +198,7 @@ void Ambassador::reflectAttributeValues (
         RTI::ObjectHandle                 theObject,
   const RTI::AttributeHandleValuePairSet& theAttrs,
   const RTI::FedTime&                     theTime,
-  const char                              *theTag,
+  const char*                             theTag,
         RTI::EventRetractionHandle        theHandle)
 throw (
   RTI::ObjectNotKnown,
@@ -213,7 +213,7 @@ throw (
 void Ambassador::reflectAttributeValues (
         RTI::ObjectHandle                 theObject,
   const RTI::AttributeHandleValuePairSet& theAttrs,
-  const char                              *theTag)
+  const char*                             theTag)
 throw (
    RTI::ObjectNotKnown,
    RTI::AttributeNotKnown,
@@ -223,7 +223,7 @@ throw (
    //std::cout << "Ambassador::reflectAttributeValues(): object = " << theObject << ", theTag=" << theTag << std::endl;
    // find the input object
    NetIO* netIO = getNetIO();
-   Nib* nib = (Nib*)( netIO->findNibByObjectHandle(theObject, NetIO::INPUT_NIB) );
+   Nib* nib = static_cast<Nib*>( netIO->findNibByObjectHandle(theObject, NetIO::INPUT_NIB) );
    if (nib != nullptr) nib->reflectAttributeValues(theAttrs);
 }
 
@@ -275,7 +275,7 @@ void Ambassador::receiveInteraction (
         RTI::InteractionClassHandle       theInteraction,
   const RTI::ParameterHandleValuePairSet& theParameters,
   const RTI::FedTime&                     theTime,
-  const char                              *theTag,
+  const char*                             theTag,
         RTI::EventRetractionHandle        theHandle)
 throw (
    RTI::InteractionClassNotKnown,
@@ -316,7 +316,7 @@ Ambassador::synchronizationPointRegistrationSucceeded (
 throw (
    RTI::FederateInternalError)
 {
-   std::cout << "Unhandled synchronizationPointRegistrationSucceeded()" << endl;
+   std::cout << "Unhandled synchronizationPointRegistrationSucceeded()" << std::endl;
 }
 
 void
@@ -325,7 +325,7 @@ Ambassador::synchronizationPointRegistrationFailed (
 throw (
    RTI::FederateInternalError)
 {
-   std::cout << "Unhandled synchronizationPointRegistrationFailed()" << endl;
+   std::cout << "Unhandled synchronizationPointRegistrationFailed()" << std::endl;
 }
 
 void
@@ -335,7 +335,7 @@ Ambassador::announceSynchronizationPoint (
 throw (
    RTI::FederateInternalError)
 {
-   std::cout << "Unhandled announceSynchronizationPoint()" << endl;
+   std::cout << "Unhandled announceSynchronizationPoint()" << std::endl;
 }
 
 void
@@ -344,7 +344,7 @@ Ambassador::federationSynchronized (
 throw (
    RTI::FederateInternalError)
 {
-   std::cout << "Unhandled federationSynchronized()" << endl;
+   std::cout << "Unhandled federationSynchronized()" << std::endl;
 }
 
 void
@@ -354,7 +354,7 @@ throw (
    RTI::UnableToPerformSave,
    RTI::FederateInternalError)
 {
-   cout << "Unhandled initiateFederateSave()" << endl;
+   std::cout << "Unhandled initiateFederateSave()" << std::endl;
 }
 
 void
@@ -362,7 +362,7 @@ Ambassador::federationSaved ()
 throw (
    RTI::FederateInternalError)
 {
-   std::cout << "Unhandled federationSaved()" << endl;
+   std::cout << "Unhandled federationSaved()" << std::endl;
 }
 
 void
@@ -370,7 +370,7 @@ Ambassador::federationNotSaved ()
 throw (
    RTI::FederateInternalError)
 {
-   std::cout << "Unhandled federationNotSaved()" << endl;
+   std::cout << "Unhandled federationNotSaved()" << std::endl;
 }
 
 void
@@ -379,17 +379,17 @@ Ambassador::requestFederationRestoreSucceeded (
 throw (
    RTI::FederateInternalError)
 {
-   std::cout << "Unhandled requestFederationRestoreSucceeded()" << endl;
+   std::cout << "Unhandled requestFederationRestoreSucceeded()" << std::endl;
 }
 
 void
 Ambassador::requestFederationRestoreFailed (
-   const char *label,
-   const char *reason)
+   const char* label,
+   const char* reason)
 throw (
    RTI::FederateInternalError)
 {
-   std::cout << "Unhandled requestFederationRestoreFailed()" << endl;
+   std::cout << "Unhandled requestFederationRestoreFailed()" << std::endl;
 }
 
 void
@@ -397,19 +397,19 @@ Ambassador::federationRestoreBegun ()
 throw (
    RTI::FederateInternalError)
 {
-   std::cout << "Unhandled federationRestoreBegun()" << endl;
+   std::cout << "Unhandled federationRestoreBegun()" << std::endl;
 }
 
 void
 Ambassador::initiateFederateRestore (
-   const char *label,
+   const char* label,
    RTI::FederateHandle handle)
 throw (
    RTI::SpecifiedSaveLabelDoesNotExist,
    RTI::CouldNotRestore,
    RTI::FederateInternalError)
 {
-   std::cout << "Unhandled initiateFederateRestore()" << endl;
+   std::cout << "Unhandled initiateFederateRestore()" << std::endl;
 }
 
 void
@@ -417,7 +417,7 @@ Ambassador::federationRestored ()
 throw (
    RTI::FederateInternalError)
 {
-   std::cout << "Unhandled federationRestored()" << endl;
+   std::cout << "Unhandled federationRestored()" << std::endl;
 }
 
 void
@@ -425,7 +425,7 @@ Ambassador::federationNotRestored ()
 throw (
    RTI::FederateInternalError)
 {
-   std::cout << "Unhandled federationNotRestored()" << endl;
+   std::cout << "Unhandled federationNotRestored()" << std::endl;
 }
 
 ////////////////////////////////
@@ -441,7 +441,7 @@ throw (
    RTI::AttributeNotKnown,
    RTI::FederateInternalError)
 {
-   cout << "Unhandled attributesInScope()" << endl;
+   std::cout << "Unhandled attributesInScope()" << std::endl;
 }
 
 void
@@ -453,7 +453,7 @@ throw (
    RTI::AttributeNotKnown,
    RTI::FederateInternalError)
 {
-   cout << "Unhandled attributesOutOfScope()" << endl;
+   std::cout << "Unhandled attributesOutOfScope()" << std::endl;
 }
 
 
@@ -465,7 +465,7 @@ void
 Ambassador::requestAttributeOwnershipAssumption (
         RTI::ObjectHandle        theObject,
   const RTI::AttributeHandleSet& offeredAttributes,
-  const char                    *theTag)
+  const char*                    theTag)
 throw (
    RTI::ObjectNotKnown,
    RTI::AttributeNotKnown,
@@ -473,7 +473,7 @@ throw (
    RTI::AttributeNotPublished,
    RTI::FederateInternalError)
 {
-   cout << "Unhandled requestAttributeOwnershipAssumption()" << endl;
+   std::cout << "Unhandled requestAttributeOwnershipAssumption()" << std::endl;
 }
 
 void
@@ -487,7 +487,7 @@ throw (
    RTI::AttributeDivestitureWasNotRequested,
    RTI::FederateInternalError)
 {
-   cout << "Unhandled attributeOwnershipDivestitureNotification()" << endl;
+   std::cout << "Unhandled attributeOwnershipDivestitureNotification()" << std::endl;
 }
 
 void
@@ -502,7 +502,7 @@ throw (
   RTI::AttributeNotPublished,
   RTI::FederateInternalError)
 {
-   cout << "Unhandled attributeOwnershipAcquisitionNotification()" << endl;
+   std::cout << "Unhandled attributeOwnershipAcquisitionNotification()" << std::endl;
 }
 
 void
@@ -517,21 +517,21 @@ throw (
   RTI::AttributeAcquisitionWasNotRequested,
   RTI::FederateInternalError)
 {
-   cout << "Unhandled attributeOwnershipUnavailable()" << endl;
+   std::cout << "Unhandled attributeOwnershipUnavailable()" << std::endl;
 }
 
 void
 Ambassador::requestAttributeOwnershipRelease (
         RTI::ObjectHandle        theObject,
   const RTI::AttributeHandleSet& candidateAttributes,
-  const char                     *theTag)
+  const char*                    theTag)
 throw (
   RTI::ObjectNotKnown,
   RTI::AttributeNotKnown,
   RTI::AttributeNotOwned,
   RTI::FederateInternalError)
 {
-   cout << "Unhandled requestAttributeOwnershipRelease()" << endl;
+   std::cout << "Unhandled requestAttributeOwnershipRelease()" << std::endl;
 }
 
 void
@@ -546,7 +546,7 @@ throw (
   RTI::AttributeAcquisitionWasNotCanceled,
   RTI::FederateInternalError)
 {
-   cout << "Unhandled confirmAttributeOwnershipAcquisitionCancellation()" << endl;
+   std::cout << "Unhandled confirmAttributeOwnershipAcquisitionCancellation()" << std::endl;
 }
 
 void
@@ -559,7 +559,7 @@ throw (
    RTI::AttributeNotKnown,
    RTI::FederateInternalError)
 {
-   cout << "Unhandled informAttributeOwnership()" << endl;
+   std::cout << "Unhandled informAttributeOwnership()" << std::endl;
 }
 
 void
@@ -571,7 +571,7 @@ throw (
    RTI::AttributeNotKnown,
    RTI::FederateInternalError)
 {
-   cout << "Unhandled attributeIsNotOwned()" << endl;
+   std::cout << "Unhandled attributeIsNotOwned()" << std::endl;
 }
 
 void
@@ -583,7 +583,7 @@ throw (
    RTI::AttributeNotKnown,
    RTI::FederateInternalError)
 {
-   cout << "Unhandled attributeOwnedByRTI()" << endl;
+   std::cout << "Unhandled attributeOwnedByRTI()" << std::endl;
 }
 
 //////////////////////////////
@@ -598,9 +598,9 @@ throw (
    RTI::EnableTimeRegulationWasNotPending,
    RTI::FederateInternalError)
 {
-  cout << "### timeRegulationEnabled callback";
+  std::cout << "### timeRegulationEnabled callback";
   hlaIo->setFederationTime(theFederateTime);
-  cout << "  Federate Time is " << hlaIo->getFederationTime() << endl;
+  std::cout << "  Federate Time is " << hlaIo->getFederationTime() << std::endl;
 }
 
 void
@@ -611,9 +611,9 @@ throw (
    RTI::EnableTimeConstrainedWasNotPending,
    RTI::FederateInternalError)
 {
-  cout << "### timeConstrainedEnabled callback";
+  std::cout << "### timeConstrainedEnabled callback";
   hlaIo->setFederationTime(theFederateTime);
-  cout << "  Federate Time is " << hlaIo->getFederationTime() << endl;
+  std::cout << "  Federate Time is " << hlaIo->getFederationTime() << std::endl;
 }
 
 void
@@ -627,7 +627,7 @@ throw (
 {
   hlaIo->setTimeAdvanceOutstanding(RTI::RTI_FALSE);
   hlaIo->setFederationTime(theTime);
-//  cout << "### timeAdvanceGrant callback Time: " << hlaIo->getFederationTime() << endl;
+//  std::cout << "### timeAdvanceGrant callback Time: " << hlaIo->getFederationTime() << endl;
 }
 
 void
@@ -637,7 +637,7 @@ throw (
    RTI::EventNotKnown,
    RTI::FederateInternalError)
 {
-   cout << "Unhandled requestRetraction()" << endl;
+   std::cout << "Unhandled requestRetraction()" << std::endl;
 }
 
 } // End Hla namespace

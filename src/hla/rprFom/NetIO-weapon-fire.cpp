@@ -179,7 +179,7 @@ bool NetIO::publishAndSubscribeWeaponFire()
 //------------------------------------------------------------------------------
 bool NetIO::receiveWeaponFire(const RTI::ParameterHandleValuePairSet& theParameters)
 {
-   std::cout << "RprFom::Nib::receiveWeaponFire() HERE!!" << std::endl;
+    std::cout << "RprFom::Nib::receiveWeaponFire() HERE!!" << std::endl;
     RTI::ULong length;
     char netBuffer[1000];
     for (RTI::ULong i = 0 ; i < theParameters.size(); i++ ) {

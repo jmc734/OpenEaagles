@@ -10,6 +10,8 @@
 #include "openeaagles/basic/Number.h"
 #include "openeaagles/basic/Pair.h"
 
+#include <cstring>
+
 #ifndef WIN32
 #include "unistd.h"
 #endif
@@ -18,7 +20,7 @@ namespace Eaagles {
 namespace Network {
 namespace Hla {
 
-IMPLEMENT_PARTIAL_SUBCLASS(NetIO,"HlaNetIO")
+IMPLEMENT_PARTIAL_SUBCLASS(NetIO, "HlaNetIO")
 
 //------------------------------------------------------------------------------
 // Slot table
@@ -31,9 +33,9 @@ END_SLOTTABLE(NetIO)
 
 // Map slot table to handles 
 BEGIN_SLOT_MAP(NetIO)
-   ON_SLOT(1,setSlotFedFile,Basic::String)
-   ON_SLOT(2,setSlotRegulatingTime,Basic::Number)
-   ON_SLOT(3,setSlotConstrainedTime,Basic::Number)
+   ON_SLOT(1, setSlotFedFile,Basic::String)
+   ON_SLOT(2, setSlotRegulatingTime,Basic::Number)
+   ON_SLOT(3, setSlotConstrainedTime,Basic::Number)
 END_SLOT_MAP()
 
 //------------------------------------------------------------------------------
@@ -50,15 +52,15 @@ NetIO::NetIO() : rtiAmb()
    clearAllObjectClassRegistrationFlags();
    clearAllInteractionEnabledFlags();
 
-   setFederationName(0);
-   setFederateName(0);
-   fedFileName = 0;
+   setFederationName(nullptr);
+   setFederateName(nullptr);
+   fedFileName = nullptr;
 
    otaFlag = RTI::RTI_FALSE;
    rFlag = RTI::RTI_FALSE;
    cFlag = RTI::RTI_FALSE;
 
-   fedAmb = 0;
+   fedAmb = nullptr;
 
    nInObjects = 0;
    nOutObjects = 0;
@@ -78,13 +80,13 @@ NetIO::~NetIO()
 NetIO& NetIO::operator=(const NetIO& org)
 {
    deleteData();
-   copyData(org,false);
+   copyData(org, false);
    return *this;
 }
 
 NetIO* NetIO::clone() const
 {
-   return 0;
+   return nullptr;
 }
 
 //------------------------------------------------------------------------------
@@ -102,10 +104,10 @@ void NetIO::copyData(const NetIO& org, const bool cc)
       clearAllObjectClassRegistrationFlags();
       clearAllInteractionEnabledFlags();
 
-      setFederationName(0);
-      setFederateName(0);
-      fedFileName = 0;
-      fedAmb = 0;
+      setFederationName(nullptr);
+      setFederateName(nullptr);
+      fedFileName = nullptr;
+      fedAmb = nullptr;
 
       nInObjects = 0;
       nOutObjects = 0;
@@ -138,41 +140,41 @@ void NetIO::copyData(const NetIO& org, const bool cc)
 
    {
       const Basic::String* s = org.getFederationName();
-      if (s != 0) {
-         setFederationName( (Basic::String*) s->clone() );
+      if (s != nullptr) {
+         setFederationName( static_cast<Basic::String*>(s->clone()) );
       }
       else {
-         setFederationName(0);
+         setFederationName(nullptr);
       }
    }
 
    {
       const Basic::String* s = org.getFederateName();
-      if (s != 0) {
-         setFederateName( (Basic::String*) s->clone() );
+      if (s != nullptr) {
+         setFederateName( static_cast<Basic::String*>(s->clone()) );
       }
       else {
-         setFederateName(0);
+         setFederateName(nullptr);
       }
    }
 
    {
       const Basic::String* s = org.getFederateName();
-      if (s != 0) {
-         setFederateName( (Basic::String*) s->clone() );
+      if (s != nullptr) {
+         setFederateName( static_cast<Basic::String*>(s->clone()) );
       }
       else {
-         setFederateName(0);
+         setFederateName(nullptr);
       }
    }
 
    {
       const Basic::String* s = org.fedFileName;
-      if (s != 0) {
-         fedFileName = (Basic::String*) s->clone();
+      if (s != nullptr) {
+         fedFileName = static_cast<Basic::String*>(s->clone());
       }
       else {
-         fedFileName = 0;
+         fedFileName = nullptr;
       }
    }
 
@@ -194,9 +196,9 @@ void NetIO::deleteData()
       // resign from the federation execution and attempt to destroy
       resignAndDestroyFederation();
    }
-   setFederationName(0);
-   setFederateName(0);
-   fedFileName = 0;
+   setFederationName(nullptr);
+   setFederateName(nullptr);
+   fedFileName = nullptr;
 }
 
     
@@ -460,8 +462,8 @@ Ambassador* NetIO::createFederateAmbassador()
 //------------------------------------------------------------------------------
 const char* NetIO::getFedFileName() const
 {
-    const char* s = 0;
-    if (fedFileName != 0) {
+    const char* s = nullptr;
+    if (fedFileName != nullptr) {
         s = *fedFileName;
     }
     return s;
@@ -524,7 +526,7 @@ bool NetIO::initNetwork()
     // Create the federate unique ambassador
     // ---
     fedAmb = createFederateAmbassador();
-    bool ok = (fedAmb != 0);
+    bool ok = (fedAmb != nullptr);
 
     // ---
     // join the federation
@@ -563,7 +565,7 @@ bool NetIO::createAndJoinFederation()
     const Basic::String* federation = getFederationName();
     const Basic::String* federate   = getFederateName();
 
-    if (federation != 0 && federate != 0) {
+    if (federation != nullptr && federate != nullptr) {
 
        ok = true; // default
 
@@ -630,7 +632,7 @@ bool NetIO::resignAndDestroyFederation()
 {
     const Basic::String* federation = getFederationName();
 
-    if (federation != 0) {
+    if (federation != nullptr) {
        try {
            rtiAmb.resignFederationExecution(
                RTI::DELETE_OBJECTS_AND_RELEASE_ATTRIBUTES);
@@ -792,7 +794,7 @@ bool NetIO::setSlotFedFile(Basic::String* const msg)
 bool NetIO::setSlotRegulatingTime(Basic::Number* const msg)
 {
    bool ok = false;
-   if (msg != 0) {
+   if (msg != nullptr) {
       if (msg->getBoolean()) setRegulating(RTI::RTI_TRUE);
       else setRegulating(RTI::RTI_FALSE);
       ok = true;
@@ -803,7 +805,7 @@ bool NetIO::setSlotRegulatingTime(Basic::Number* const msg)
 bool NetIO::setSlotConstrainedTime(Basic::Number* const msg)
 {
    bool ok = false;
-   if (msg != 0) {
+   if (msg != nullptr) {
       if (msg->getBoolean()) setConstrained(RTI::RTI_TRUE);
       else setConstrained(RTI::RTI_FALSE);
       ok = true;
@@ -818,7 +820,7 @@ void NetIO::addNibToObjectTables(Simulation::Nib* const nib, const IoType ioType
 {
    Nib* hlaNib = dynamic_cast<Nib*>(nib);
 
-   if (hlaNib != 0 && nInObjects < MAX_OBJECTS) {
+   if (hlaNib != nullptr && nInObjects < MAX_OBJECTS) {
       // Add to the 'by object name' and 'by object handle' tables
       if (ioType == INPUT_NIB ) {
          addNibToNameTable(hlaNib, inNameTbl, nInObjects);
@@ -879,7 +881,7 @@ void NetIO::removeNibFromObjectTables(Simulation::Nib* const nib, const IoType i
 {
    Nib* hlaNib = dynamic_cast<Nib*>(nib);
 
-   if (hlaNib != 0 && nInObjects > 0) {
+   if (hlaNib != nullptr && nInObjects > 0) {
       // Remove from the 'by object name' and 'by object handle' tables
       if (ioType == INPUT_NIB) {
          removeNibFromTable(hlaNib, inNameTbl, nInObjects);
@@ -909,7 +911,7 @@ void NetIO::removeNibFromTable(Nib* const nib, Nib** tbl, const unsigned int n)
       for (unsigned int i = found; i < n1; i++) {
          tbl[i] = tbl[i+1];
       }
-      tbl[n-1] = 0;
+      tbl[n-1] = nullptr;
    }
 }
 
@@ -918,16 +920,14 @@ void NetIO::removeNibFromTable(Nib* const nib, Nib** tbl, const unsigned int n)
 //------------------------------------------------------------------------------
 Nib* NetIO::findNibByObjectHandle(RTI::ObjectHandle handle, const IoType ioType)
 {
-   Nib* found = 0;
+   Nib* found = nullptr;
    if (ioType == INPUT_NIB) {
-      Nib** k = 
-         (Nib**) bsearch(&handle, inHandleTbl, nInObjects, sizeof(Nib*), compareObjHandles);
-      if (k != 0) found = *k;
+      Nib** k = static_cast<Nib**>(bsearch(&handle, inHandleTbl, nInObjects, sizeof(Nib*), compareObjHandles));
+      if (k != nullptr) found = *k;
    }
    else {
-      Nib** k = 
-         (Nib**) bsearch(&handle, outHandleTbl, nOutObjects, sizeof(Nib*), compareObjHandles);
-      if (k != 0) found = *k;
+      Nib** k = static_cast<Nib**>(bsearch(&handle, outHandleTbl, nOutObjects, sizeof(Nib*), compareObjHandles));
+      if (k != nullptr) found = *k;
    }
    return found;
 }
@@ -937,16 +937,14 @@ Nib* NetIO::findNibByObjectHandle(RTI::ObjectHandle handle, const IoType ioType)
 //------------------------------------------------------------------------------
 Nib* NetIO::findNibByObjectName(const char* name, const IoType ioType)
 {
-   Nib* found = 0;
+   Nib* found = nullptr;
    if (ioType == INPUT_NIB) {
-      Nib** k = 
-         (Nib**) bsearch(name, inNameTbl, nInObjects, sizeof(Nib*), compareObjNames);
-      if (k != 0) found = *k;
+      Nib** k = static_cast<Nib**>(bsearch(name, inNameTbl, nInObjects, sizeof(Nib*), compareObjNames));
+      if (k != nullptr) found = *k;
    }
    else {
-      Nib** k = 
-         (Nib**) bsearch(name, outNameTbl, nOutObjects, sizeof(Nib*), compareObjNames);
-      if (k != 0) found = *k;
+      Nib** k = static_cast<Nib**>(bsearch(name, outNameTbl, nOutObjects, sizeof(Nib*), compareObjNames));
+      if (k != nullptr) found = *k;
    }
    return found;
 }
@@ -957,7 +955,7 @@ Nib* NetIO::findNibByObjectName(const char* name, const IoType ioType)
 void NetIO::destroyInputNib(Simulation::Nib* const nib)
 {
    std::cout << "NetIO::destroyInputNib(" << nib << ")" << std::endl;
-   if (nib != 0) {
+   if (nib != nullptr) {
       // Remove it from our object name and handle tables
       removeNibFromObjectTables(nib, Simulation::NetIO::INPUT_NIB);
       // Let our base class handle the rest
@@ -969,12 +967,12 @@ void NetIO::destroyOutputNib(Simulation::Nib* const nib0)
 {
    std::cout << "NetIO::destroyOutputNib(" << nib0 << ")" << std::endl;
    Nib* nib = dynamic_cast<Nib*>(nib0);
-   if (nib != 0) {
+   if (nib != nullptr) {
       if (nib->isRegistered()) {
          // When this output NIB was registered as an HLA object ...
          std::cout << "###DeleteReq- Unref-2: handle: " << nib->getObjectHandle() << std::endl;
          removeNibFromObjectTables(nib, OUTPUT_NIB);
-         getRTIambassador()->deleteObjectInstance(nib->getObjectHandle(),0);
+         getRTIambassador()->deleteObjectInstance(nib->getObjectHandle(), nullptr);
          nib->setObjectHandle(0);
          nib->setClassIndex(0);
       }
@@ -996,14 +994,14 @@ void NetIO::destroyOutputNib(Simulation::Nib* const nib0)
 int NetIO::compareObjNames(const void* p1, const void* p2)
 {
    // Key's name
-   const char* name1 = (const char*) p1;
+   const char* name1 = static_cast<const char*>(p1);
 
    // NIB's name
    const Nib* pNib = *((const Nib**) p2);
    const char* name2 = pNib->getObjectName();
 
    // compare the names
-   int result = strcmp(name1, name2);
+   int result = std::strcmp(name1, name2);
    return result;
 }
 
@@ -1012,7 +1010,7 @@ int NetIO::compareObjNames(const void* p1, const void* p2)
 int NetIO::compareObjHandles(const void* p1, const void* p2)
 {
    // Key's handle
-   const RTI::ObjectClassHandle h1 = *(const RTI::ObjectClassHandle*) p1;
+   const RTI::ObjectClassHandle h1 = *static_cast<const RTI::ObjectClassHandle*>(p1);
 
    // NIB's handle
    const Nib* pNib = *((const Nib**) p2);

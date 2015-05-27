@@ -9,6 +9,8 @@
 #include "openeaagles/basic/Number.h"
 #include "openeaagles/basic/Pair.h"
 
+#include <cstdio>
+
 // disable all deprecation warnings for now, until we fix
 // they are quite annoying to see over and over again...
 #if(_MSC_VER>=1400)   // VC8+
@@ -99,7 +101,7 @@ void Nib::makeObjectName()
 {
    char name[256];
    const char* fname = *getFederateName();
-   sprintf(name, "P%d_%s", int(getPlayerID()), fname );
+   std::sprintf(name, "P%d_%s", int(getPlayerID()), fname );
    setObjectName(name);
 }                            
 
@@ -166,8 +168,8 @@ bool Nib::isPlayerStateUpdateRequired(const LCreal curExecTime)
 //------------------------------------------------------------------------------
 void Nib::turnUpdatesOn(const RTI::AttributeHandleSet& theAttributes)
 {
-   NetIO* hlaIO = (NetIO*)(getNetIO());
-   if (hlaIO != 0) {
+   NetIO* hlaIO = static_cast<NetIO*>(getNetIO());
+   if (hlaIO != nullptr) {
       //std::cout << getObjectName();
       //std::cout << " ON ( ";
       for (RTI::ULong i = 0; i < theAttributes.size(); i++) {
@@ -191,8 +193,8 @@ void Nib::turnUpdatesOn(const RTI::AttributeHandleSet& theAttributes)
 //------------------------------------------------------------------------------
 void Nib::turnUpdatesOff(const RTI::AttributeHandleSet& theAttributes)
 {
-   NetIO* hlaIO = (NetIO*)(getNetIO());
-   if (hlaIO != 0) {
+   NetIO* hlaIO = static_cast<NetIO*>(getNetIO());
+   if (hlaIO != nullptr) {
       //std::cout << getObjectName();
       //std::cout << " OFF ( ";
       for (RTI::ULong i = 0; i < theAttributes.size(); i++) {
@@ -215,8 +217,8 @@ void Nib::turnUpdatesOff(const RTI::AttributeHandleSet& theAttributes)
 //------------------------------------------------------------------------------
 void Nib::provideAttributeValueUpdate(const RTI::AttributeHandleSet& theAttributes)
 {
-   NetIO* hlaIO = (NetIO*)(getNetIO());
-   if (hlaIO != 0) {
+   NetIO* hlaIO = static_cast<NetIO*>(getNetIO());
+   if (hlaIO != nullptr) {
       //std::cout << getObjectName();
       //std::cout << " Update ( ";
       for (RTI::ULong i = 0; i < theAttributes.size(); i++) {

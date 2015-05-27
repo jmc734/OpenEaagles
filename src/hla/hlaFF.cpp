@@ -6,18 +6,20 @@
 
 //#include "rpr_fomRprFomIO.h"
 
+#include <cstring>
+
 namespace Eaagles {
 namespace Network {
 namespace Hla {
 
 Basic::Object* hlaFormFunc(const char* const formname)
 {
-    Basic::Object* newform = 0;
+    Basic::Object* newform = nullptr;
 
-    //if ( strcmp(formname, getFormName()) == 0 ) {
+    //if ( std::strcmp(formname, getFormName()) == 0 ) {
     //    newform = new Mc02FomIO();
     //}
-    //if ( strcmp(formname, RprFomIO::getFormName()) == 0 ) {
+    //if ( std::strcmp(formname, RprFomIO::getFormName()) == 0 ) {
     //    newform = new RprFomIO;
     //}
 

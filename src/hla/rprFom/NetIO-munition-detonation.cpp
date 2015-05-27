@@ -14,6 +14,9 @@
 #include "openeaagles/basic/Nav.h"
 #include "openeaagles/basic/NetHandler.h"
 
+#include <iostream>
+#include <cstring>
+
 namespace Eaagles {
 namespace Network {
 namespace Hla {
@@ -219,7 +222,7 @@ bool NetIO::receiveMunitionDetonation(const RTI::ParameterHandleValuePairSet& th
             // Get the object's name
             RTI::ULong n = RTIObjectIdStruct::ID_SIZE;
             if (n > length) n = length;
-            lcStrncpy((char*)&firingObjectIdentifier.id[0], sizeof(firingObjectIdentifier.id), netBuffer, n);
+            lcStrncpy(reinterpret_cast<char*>(&firingObjectIdentifier.id[0]), sizeof(firingObjectIdentifier.id), netBuffer, n);
             firingObjectIdentifier.id[n-1] = '\0';   
         }
         break;
@@ -228,7 +231,7 @@ bool NetIO::receiveMunitionDetonation(const RTI::ParameterHandleValuePairSet& th
             // Get the object's name
             RTI::ULong n = RTIObjectIdStruct::ID_SIZE;
             if (n > length) n = length;
-            lcStrncpy((char*)&munitionObjectIdentifier.id[0], sizeof(munitionObjectIdentifier.id), netBuffer, n);
+            lcStrncpy(reinterpret_cast<char*>(&munitionObjectIdentifier.id[0]), sizeof(munitionObjectIdentifier.id), netBuffer, n);
             munitionObjectIdentifier.id[n-1] = '\0';   
         }
         break;
@@ -237,7 +240,7 @@ bool NetIO::receiveMunitionDetonation(const RTI::ParameterHandleValuePairSet& th
             // Get the object's name
             RTI::ULong n = RTIObjectIdStruct::ID_SIZE;
             if (n > length) n = length;
-            lcStrncpy((char*)&targetObjectIdentifier.id[0], sizeof(targetObjectIdentifier.id), netBuffer, n);
+            lcStrncpy(reinterpret_cast<char*>(&targetObjectIdentifier.id[0]), sizeof(targetObjectIdentifier.id), netBuffer, n);
             targetObjectIdentifier.id[n-1] = '\0';   
         }
         break;
@@ -249,35 +252,35 @@ bool NetIO::receiveMunitionDetonation(const RTI::ParameterHandleValuePairSet& th
     // ---
     // 1) Find the target (local) player
     // ---
-    Simulation::Player* tPlayer = 0;
-    if ( strlen((const char*)targetObjectIdentifier.id) > 0 ) {
-        Simulation::Nib* tNib = findNibByObjectName( (char*)targetObjectIdentifier.id, OUTPUT_NIB);
-        if (tNib != 0) tPlayer = tNib->getPlayer();
+    Simulation::Player* tPlayer = nullptr;
+    if ( std::strlen(reinterpret_cast<const char*>(targetObjectIdentifier.id)) > 0 ) {
+        Simulation::Nib* tNib = findNibByObjectName( reinterpret_cast<char*>(targetObjectIdentifier.id), OUTPUT_NIB);
+        if (tNib != nullptr) tPlayer = tNib->getPlayer();
     }
     
     // ---
     // Note: we're only interested (at this time) with our local players being hit
     // by other networked IPlayers.
     // ---
-    if (tPlayer != 0) {
+    if (tPlayer != nullptr) {
         
         // ---
         // 2) Find the firing player and munitions (networked) IPlayers
         // ---
-        Simulation::Nib* fNib = 0;
-        Simulation::Nib* mNib = 0;
-        if ( strlen((const char*)firingObjectIdentifier.id) > 0 ) {
-            fNib = findNibByObjectName( (char*)firingObjectIdentifier.id, INPUT_NIB);
+        Simulation::Nib* fNib = nullptr;
+        Simulation::Nib* mNib = nullptr;
+        if ( std::strlen(reinterpret_cast<const char*>(firingObjectIdentifier.id)) > 0 ) {
+            fNib = findNibByObjectName( reinterpret_cast<char*>(firingObjectIdentifier.id), INPUT_NIB);
         }
-        if ( strlen((const char*)munitionObjectIdentifier.id) > 0 ) {
-            mNib = findNibByObjectName( (char*)munitionObjectIdentifier.id, INPUT_NIB);
+        if ( std::strlen(reinterpret_cast<const char*>(munitionObjectIdentifier.id)) > 0 ) {
+            mNib = findNibByObjectName( reinterpret_cast<char*>(munitionObjectIdentifier.id), INPUT_NIB);
         }
 
         // ---
         // 3) Tell the target player that it was killed by the firing player
         // ---
         if (detonationResult == Simulation::Weapon::DETONATE_ENTITY_IMPACT) {
-            if (fNib != 0) {
+            if (fNib != nullptr) {
                 tPlayer->event(KILL_EVENT,fNib->getPlayer());
             }
             else {
@@ -288,9 +291,9 @@ bool NetIO::receiveMunitionDetonation(const RTI::ParameterHandleValuePairSet& th
         // ---
         // 4) Update the mode of the munition IPlayer
         // ---
-        if (mNib != 0) {
+        if (mNib != nullptr) {
             Simulation::Weapon* mPlayer = dynamic_cast<Simulation::Weapon*>(mNib->getPlayer());
-            if (mPlayer != 0) {
+            if (mPlayer != nullptr) {
                 mPlayer->setMode(Simulation::Player::DETONATED);
                 mPlayer->setDetonationResults(detonationResult);
             }

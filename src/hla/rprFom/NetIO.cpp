@@ -35,7 +35,7 @@ namespace RprFom {
 //==============================================================================
 
 class NtmInputNode : public Simulation::NetIO::NtmInputNode {
-   DECLARE_SUBCLASS(NtmInputNode,Simulation::NetIO::NtmInputNode)
+   DECLARE_SUBCLASS(NtmInputNode, Simulation::NetIO::NtmInputNode)
 
 public:
    enum { ROOT_LVL, KIND_LVL, DOMAIN_LVL, COUNTRYCODE_LVL,
@@ -140,7 +140,7 @@ Simulation::Nib* NetIO::createNewOutputNib(Simulation::Player* const player)
     // create the proper FOM class structure
     // ---
     unsigned int idx = 0;
-    BaseEntity* baseEntity = 0;
+    BaseEntity* baseEntity = nullptr;
     if (player->isClassType(typeid(Simulation::AirVehicle))) {
         if (isObjectClassRegistrationEnabled( AIRCRAFT_CLASS )) {
             baseEntity = new Aircraft();
@@ -175,10 +175,10 @@ Simulation::Nib* NetIO::createNewOutputNib(Simulation::Player* const player)
     // ---
     // If enabled, create and set the output NIB
     // ---
-    Nib* nib = 0;
-    if (baseEntity != 0) {
-        nib = (Nib*) nibFactory(Simulation::NetIO::OUTPUT_NIB);
-        if (nib != 0) {
+    Nib* nib = nullptr;
+    if (baseEntity != nullptr) {
+        nib = static_cast<Nib*>(nibFactory(Simulation::NetIO::OUTPUT_NIB));
+        if (nib != nullptr) {
            nib->setBaseEntity(baseEntity);
            nib->setNetIO(this);
            nib->setPlayer(player);
@@ -228,8 +228,8 @@ bool NetIO::publishAndSubscribe()
 void NetIO::processInputList()
 {
    for (unsigned int idx = 0; idx < getInputListSize(); idx++) {
-      Nib* nib = (Nib*)( getInputNib(idx) );
-      if (nib != 0) nib->updateTheIPlayer();
+      Nib* nib = static_cast<Nib*>( getInputNib(idx) );
+      if (nib != nullptr) nib->updateTheIPlayer();
    }
 }
 
@@ -249,7 +249,7 @@ void NetIO::discoverObjectInstance(
         const RTI::ObjectClassHandle theObjectClass,
         const char* theObjectName)
 {
-   BaseEntity* baseEntity = 0;
+   BaseEntity* baseEntity = nullptr;
 
    unsigned int idx = findObjectClassIndex(theObjectClass);
    switch (idx) {
@@ -270,9 +270,9 @@ void NetIO::discoverObjectInstance(
          break;
    };
 
-   if (baseEntity != 0) {
+   if (baseEntity != nullptr) {
       Nib* nib = dynamic_cast<Nib*>( createNewInputNib() );
-      if (nib != 0) {
+      if (nib != nullptr) {
          nib->setObjectHandle(theObject);
          nib->setObjectName(theObjectName);
          nib->setClassIndex(idx);
@@ -303,7 +303,6 @@ void NetIO::receiveInteraction(
         case MUNITION_DETONATION_INTERACTION :
             receiveMunitionDetonation(theParameters);
             break;
-            
     };
 }
 
@@ -320,13 +319,11 @@ const Ntm* NetIO::findNtmByTypeCodes(
          const unsigned char  extra
       ) const
 {
-   const Hla::RprFom::Ntm* result = 0;
+   const Hla::RprFom::Ntm* result = nullptr;
 
    const Hla::RprFom::NtmInputNode* root = dynamic_cast<const Hla::RprFom::NtmInputNode*>( getRootNtmInputNode() );
-   if (root != 0) {
-
+   if (root != nullptr) {
       result = root->findNtmByTypeCodes(kind, domain, countryCode, category, subcategory, specific, extra);
-
    }
    return result;
 }
@@ -356,7 +353,7 @@ NtmInputNode::NtmInputNode(const unsigned int l, const unsigned int c, const Ntm
 {
    STANDARD_CONSTRUCTOR()
 
-   if (ntm != 0) {
+   if (ntm != nullptr) {
       ourNtm = ntm;
       ourNtm->ref();
    }
@@ -368,40 +365,40 @@ void NtmInputNode::copyData(const NtmInputNode& org, const bool cc)
    BaseClass::copyData(org);
 
    if (cc) {
-      ourNtm = 0;
-      subnodeList = 0;
+      ourNtm = nullptr;
+      subnodeList = nullptr;
    }
 
    level = org.level;
    code = org.code;
 
-   if (ourNtm != 0) {
+   if (ourNtm != nullptr) {
       ourNtm->unref();
-      ourNtm = 0;
+      ourNtm = nullptr;
    }
-   if (org.ourNtm != 0) {
+   if (org.ourNtm != nullptr) {
       ourNtm = org.ourNtm->clone();
    }
 
-   if (subnodeList != 0) {
+   if (subnodeList != nullptr) {
       subnodeList->unref();
-      subnodeList = 0;
+      subnodeList = nullptr;
    }
-   if (org.subnodeList != 0) {
+   if (org.subnodeList != nullptr) {
       subnodeList = org.subnodeList->clone();
    }
 }
 
 void NtmInputNode::deleteData()
 {
-   if (ourNtm != 0) {
+   if (ourNtm != nullptr) {
       ourNtm->unref();
-      ourNtm = 0;
+      ourNtm = nullptr;
    }
 
-   if (subnodeList != 0) {
+   if (subnodeList != nullptr) {
       subnodeList->unref();
-      subnodeList = 0;
+      subnodeList = nullptr;
    }
 }
 
@@ -410,10 +407,10 @@ void NtmInputNode::deleteData()
 //------------------------------------------------------------------------------
 const Simulation::Ntm* NtmInputNode::findNetworkTypeMapper(const Simulation::Nib* const nib) const
 {
-   const Simulation::Ntm* result = 0;
+   const Simulation::Ntm* result = nullptr;
 
    const Hla::RprFom::Nib* rprFomNib = dynamic_cast<const Hla::RprFom::Nib*>( nib );
-   if (rprFomNib != 0) {
+   if (rprFomNib != nullptr) {
       result = findNtmByTypeCodes(
             rprFomNib->getEntityKind(),
             rprFomNib->getEntityDomain(),
@@ -440,7 +437,7 @@ const Ntm* NtmInputNode::findNtmByTypeCodes(
       const unsigned char  extra
    ) const
 {
-   const Ntm* result = 0;
+   const Ntm* result = nullptr;
 
    {
       // Yes we have the proper type of NIB ...
@@ -464,8 +461,8 @@ const Ntm* NtmInputNode::findNtmByTypeCodes(
          // our subnodes to see if they can find a match
          if (level < EXTRA_LVL) {
             const Basic::List::Item* item = subnodeList->getFirstItem();
-            while (item != 0 && result == 0) {
-               const NtmInputNode* subnode = (const NtmInputNode*) item->getValue();
+            while (item != nullptr && result == nullptr) {
+               const NtmInputNode* subnode = static_cast<const NtmInputNode*>(item->getValue());
                result = subnode->findNtmByTypeCodes(kind, domain, countryCode, category, subcategory, specific, extra);
                item = item->getNext();
             }
@@ -474,7 +471,7 @@ const Ntm* NtmInputNode::findNtmByTypeCodes(
          // Second, we can use our NTM object, but only if we're at the category
          // level or higher (i.e., we must have match at the kind, domain, country
          // code and category levels)
-         if (result == 0 && level >= CATEGORY_LVL) {
+         if (result == nullptr && level >= CATEGORY_LVL) {
             result = ourNtm;
          }
       }
@@ -494,7 +491,7 @@ bool NtmInputNode::add2OurLists(Simulation::Ntm* const ntm)
 
    // Make sure we have the correct kind of NTM ...
    Hla::RprFom::Ntm* disNtm = dynamic_cast<Hla::RprFom::Ntm*>( ntm );
-   if (disNtm != 0) {
+   if (disNtm != nullptr) {
 
       // Make sure that the NTM's code for this level matches our code
       unsigned int currLevelCode = 0;
@@ -560,7 +557,7 @@ bool NtmInputNode::add2OurLists(Simulation::Ntm* const ntm)
 
             if (wild) {
                // wild card terminal node
-               if (ourNtm == 0) {
+               if (ourNtm == nullptr) {
                   ourNtm = disNtm;
                   ourNtm->ref();
                   ok = true;
@@ -587,7 +584,7 @@ bool NtmInputNode::add2OurLists(Simulation::Ntm* const ntm)
             // make sure the terminal node doesn't already exist.
             bool alreadyExists = false;
             const Basic::List::Item* item = subnodeList->getFirstItem();
-            while (item != 0 && !alreadyExists) {
+            while (item != nullptr && !alreadyExists) {
                NtmInputNode* subnode = (NtmInputNode*) item->getValue();
                alreadyExists = (nextLevelCode == subnode->code);
                item = item->getNext();
@@ -617,7 +614,7 @@ bool NtmInputNode::add2OurLists(Simulation::Ntm* const ntm)
          // to add the NTM to one of our existing subnodes.
          if (!ok && !err && level < SPECIFIC_LVL) {
             const Basic::List::Item* item = subnodeList->getFirstItem();
-            while (item != 0 && !ok) {
+            while (item != nullptr && !ok) {
                NtmInputNode* subnode = (NtmInputNode*) item->getValue();
                if (nextLevelCode == subnode->code) {
                   ok = subnode->add2OurLists(disNtm);
@@ -653,15 +650,15 @@ void NtmInputNode::print(std::ostream& sout, const int icnt) const
    sout << std::endl;
 
    // Print our Ntm object
-   if (ourNtm != 0) {
+   if (ourNtm != nullptr) {
       ourNtm->serialize(sout, icnt+4);
    }
 
    // Print our subnodes
    {
       const Basic::List::Item* item = subnodeList->getFirstItem();
-      while (item != 0) {
-         const NtmInputNode* subnode = (const NtmInputNode*) item->getValue();
+      while (item != nullptr) {
+         const NtmInputNode* subnode = static_cast<const NtmInputNode*>(item->getValue());
          subnode->print(sout,icnt+4);
          item = item->getNext();
       }
