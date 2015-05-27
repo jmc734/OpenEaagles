@@ -25,8 +25,8 @@ namespace RprFom {
 //------------------------------------------------------------------------------
 void Nib::reflectAttributeValues(const RTI::AttributeHandleValuePairSet& theAttrs)
 {
-   NetIO* netIO = (NetIO*)(getNetIO());
-   if (netIO != 0 && baseEntity != 0) {
+   NetIO* netIO = static_cast<NetIO*>(getNetIO());
+   if (netIO != nullptr && baseEntity != nullptr) {
 
       // PhysicalEntity pointer
       PhysicalEntity* physicalEntity = dynamic_cast<PhysicalEntity*>(baseEntity);
@@ -44,25 +44,25 @@ void Nib::reflectAttributeValues(const RTI::AttributeHandleValuePairSet& theAttr
 
             // Update Federate ID
             case NetIO::ENTITY_IDENTIFIER_AI : {
-               EntityIdentifierStruct* net = (EntityIdentifierStruct*) &netBuffer;
+               EntityIdentifierStruct* net = reinterpret_cast<EntityIdentifierStruct*>(&netBuffer);
 
                Basic::NetHandler::fromNetOrder(&baseEntity->entityIdentifier.federateIdentifier.applicationID, net->federateIdentifier.applicationID );
                Basic::NetHandler::fromNetOrder(&baseEntity->entityIdentifier.federateIdentifier.siteID, net->federateIdentifier.siteID );
                Basic::NetHandler::fromNetOrder(&baseEntity->entityIdentifier.entityNumber, net->entityNumber );
 
-               setAttributeUpdateRequiredFlag(NetIO::ENTITY_IDENTIFIER_AI,true);
+               setAttributeUpdateRequiredFlag(NetIO::ENTITY_IDENTIFIER_AI, true);
             }
             break;
 
             // Update Entity Type
             case NetIO::ENTITY_TYPE_AI : {
-               EntityTypeStruct* net = (EntityTypeStruct*) &netBuffer;
+               EntityTypeStruct* net = reinterpret_cast<EntityTypeStruct*>(&netBuffer);
 
                // All bytes except for country
                baseEntity->entityType = *net;
                Basic::NetHandler::fromNetOrder(&baseEntity->entityType.countryCode, net->countryCode );
 
-               setAttributeUpdateRequiredFlag(NetIO::ENTITY_TYPE_AI,true);
+               setAttributeUpdateRequiredFlag(NetIO::ENTITY_TYPE_AI, true);
             }
             break;
 
@@ -79,12 +79,12 @@ void Nib::reflectAttributeValues(const RTI::AttributeHandleValuePairSet& theAttr
                AngularVelocityVectorStruct* angularVelocity = &spatialRvw->angularVelocity;
 
                // Net buffer component pointers 
-               SpatialStruct* netSpatial = (SpatialStruct*) &netBuffer[0];
-               WorldLocationStruct* netWorldLocation = 0;
-               OrientationStruct* netOrientation = 0;
-               VelocityVectorStruct* netVelocityVector = 0;
-               AccelerationVectorStruct* netAccelerationVector = 0;
-               AngularVelocityVectorStruct* netAngularVelocity = 0;
+               SpatialStruct* netSpatial = reinterpret_cast<SpatialStruct*>(&netBuffer[0]);
+               WorldLocationStruct* netWorldLocation = nullptr;
+               OrientationStruct* netOrientation = nullptr;
+               VelocityVectorStruct* netVelocityVector = nullptr;
+               AccelerationVectorStruct* netAccelerationVector = nullptr;
+               AngularVelocityVectorStruct* netAngularVelocity = nullptr;
 
                // Dead reckoning 
                spatial->deadReckoningAlgorithm = netSpatial->deadReckoningAlgorithm;
@@ -94,8 +94,7 @@ void Nib::reflectAttributeValues(const RTI::AttributeHandleValuePairSet& theAttr
                switch (spatial->deadReckoningAlgorithm) {
 
                   case DRM_STATIC : {
-                     SpatialStaticStruct* netSpatialStatic =
-                     (SpatialStaticStruct*) &netBuffer[sizeof(SpatialStruct)];
+                     SpatialStaticStruct* netSpatialStatic = reinterpret_cast<SpatialStaticStruct*>(&netBuffer[sizeof(SpatialStruct)]);
                      spatialRvw->isFrozen = netSpatialStatic->isFrozen;
                      netWorldLocation = &netSpatialStatic->worldLocation;
                      netOrientation = &netSpatialStatic->orientation;
@@ -103,8 +102,7 @@ void Nib::reflectAttributeValues(const RTI::AttributeHandleValuePairSet& theAttr
                   break;
 
                   case DRM_FPW : {
-                     SpatialFPStruct* netSpatialFpw =
-                           (SpatialFPStruct*) &netBuffer[sizeof(SpatialStruct)];
+                     SpatialFPStruct* netSpatialFpw = reinterpret_cast<SpatialFPStruct*>(&netBuffer[sizeof(SpatialStruct)]);
                      spatialRvw->isFrozen = netSpatialFpw->isFrozen;
                      netWorldLocation = &netSpatialFpw->worldLocation;
                      netOrientation = &netSpatialFpw->orientation;
@@ -113,8 +111,7 @@ void Nib::reflectAttributeValues(const RTI::AttributeHandleValuePairSet& theAttr
                   break;
 
                   case DRM_RPW : {
-                     SpatialRPStruct* netSpatialRpw =
-                           (SpatialRPStruct*) &netBuffer[sizeof(SpatialStruct)];
+                     SpatialRPStruct* netSpatialRpw = reinterpret_cast<SpatialRPStruct*>(&netBuffer[sizeof(SpatialStruct)]);
                      spatialRvw->isFrozen = netSpatialRpw->isFrozen;
                      netWorldLocation = &netSpatialRpw->worldLocation;
                      netOrientation = &netSpatialRpw->orientation;
@@ -124,8 +121,7 @@ void Nib::reflectAttributeValues(const RTI::AttributeHandleValuePairSet& theAttr
                   break;
 
                   case DRM_RVW : {
-                     SpatialRVStruct* netSpatialRvw =
-                           (SpatialRVStruct*) &netBuffer[sizeof(SpatialStruct)];
+                     SpatialRVStruct* netSpatialRvw = reinterpret_cast<SpatialRVStruct*>(&netBuffer[sizeof(SpatialStruct)]);
                      spatialRvw->isFrozen = netSpatialRvw->isFrozen;
                      netWorldLocation = &netSpatialRvw->worldLocation;
                      netOrientation = &netSpatialRvw->orientation;
@@ -136,8 +132,7 @@ void Nib::reflectAttributeValues(const RTI::AttributeHandleValuePairSet& theAttr
                   break;
 
                   case DRM_FVW : {
-                     SpatialFVStruct* netSpatialFvw =
-                           (SpatialFVStruct*) &netBuffer[sizeof(SpatialStruct)];
+                     SpatialFVStruct* netSpatialFvw = reinterpret_cast<SpatialFVStruct*>(&netBuffer[sizeof(SpatialStruct)]);
                      spatialRvw->isFrozen = netSpatialFvw->isFrozen;
                      netWorldLocation = &netSpatialFvw->worldLocation;
                      netOrientation = &netSpatialFvw->orientation;
@@ -147,7 +142,7 @@ void Nib::reflectAttributeValues(const RTI::AttributeHandleValuePairSet& theAttr
                   break;
                }  // end dead rec switch
 
-               if (netWorldLocation != 0) {
+               if (netWorldLocation != nullptr) {
                   Basic::NetHandler::fromNetOrder(&worldLocation->x, netWorldLocation->x);
                   Basic::NetHandler::fromNetOrder(&worldLocation->y, netWorldLocation->y);
                   Basic::NetHandler::fromNetOrder(&worldLocation->z, netWorldLocation->z);
@@ -158,7 +153,7 @@ void Nib::reflectAttributeValues(const RTI::AttributeHandleValuePairSet& theAttr
                   worldLocation->z = 0;
                }
 
-               if (netOrientation != 0) {
+               if (netOrientation != nullptr) {
                   Basic::NetHandler::fromNetOrder(&orientation->phi, netOrientation->phi);
                   Basic::NetHandler::fromNetOrder(&orientation->theta, netOrientation->theta);
                   Basic::NetHandler::fromNetOrder(&orientation->psi, netOrientation->psi);
@@ -169,7 +164,7 @@ void Nib::reflectAttributeValues(const RTI::AttributeHandleValuePairSet& theAttr
                   orientation->psi = 0;
                }
 
-               if (netVelocityVector != 0) {
+               if (netVelocityVector != nullptr) {
                   Basic::NetHandler::fromNetOrder(&velocityVector->xVelocity, netVelocityVector->xVelocity);
                   Basic::NetHandler::fromNetOrder(&velocityVector->yVelocity, netVelocityVector->yVelocity);
                   Basic::NetHandler::fromNetOrder(&velocityVector->zVelocity, netVelocityVector->zVelocity);
@@ -180,7 +175,7 @@ void Nib::reflectAttributeValues(const RTI::AttributeHandleValuePairSet& theAttr
                   velocityVector->zVelocity = 0;
                }
 
-               if (netAccelerationVector != 0) {
+               if (netAccelerationVector != nullptr) {
                   Basic::NetHandler::fromNetOrder(&accelerationVector->xAcceleration, netAccelerationVector->xAcceleration);
                   Basic::NetHandler::fromNetOrder(&accelerationVector->yAcceleration, netAccelerationVector->yAcceleration);
                   Basic::NetHandler::fromNetOrder(&accelerationVector->zAcceleration, netAccelerationVector->zAcceleration);
@@ -191,7 +186,7 @@ void Nib::reflectAttributeValues(const RTI::AttributeHandleValuePairSet& theAttr
                   accelerationVector->zAcceleration = 0;
                }
 
-               if (netAngularVelocity != 0) {
+               if (netAngularVelocity != nullptr) {
                   Basic::NetHandler::fromNetOrder(&angularVelocity->xAngularVelocity, netAngularVelocity->xAngularVelocity);
                   Basic::NetHandler::fromNetOrder(&angularVelocity->yAngularVelocity, netAngularVelocity->yAngularVelocity);
                   Basic::NetHandler::fromNetOrder(&angularVelocity->zAngularVelocity, netAngularVelocity->zAngularVelocity);
@@ -202,18 +197,15 @@ void Nib::reflectAttributeValues(const RTI::AttributeHandleValuePairSet& theAttr
                   angularVelocity->zAngularVelocity = 0;
                }
 
-               setAttributeUpdateRequiredFlag(NetIO::SPATIAL_AI,true);
+               setAttributeUpdateRequiredFlag(NetIO::SPATIAL_AI, true);
             }
             break;
 
             case NetIO::FORCE_IDENTIFIER_AI : {
-               unsigned char* net = (unsigned char*) &netBuffer;
-
-
+               unsigned char* net = reinterpret_cast<unsigned char*>(&netBuffer);
                physicalEntity->forceIdentifier = ForceIdentifierEnum8( *net );
                //std::cout << "Recv force: " << physicalEntity->forceIdentifier << std::endl;;
-
-               setAttributeUpdateRequiredFlag(NetIO::FORCE_IDENTIFIER_AI,true);
+               setAttributeUpdateRequiredFlag(NetIO::FORCE_IDENTIFIER_AI, true);
             }
             break;
 
@@ -236,7 +228,7 @@ void Nib::entityState2Nib()
       setPlayerID(baseEntity->entityIdentifier.entityNumber);
       setSiteID(baseEntity->entityIdentifier.federateIdentifier.siteID);
       setApplicationID(baseEntity->entityIdentifier.federateIdentifier.applicationID);
-      setAttributeUpdateRequiredFlag(NetIO::ENTITY_IDENTIFIER_AI,false);
+      setAttributeUpdateRequiredFlag(NetIO::ENTITY_IDENTIFIER_AI, false);
       haveEntityIdFlg = true;
    }
 
@@ -250,7 +242,7 @@ void Nib::entityState2Nib()
             baseEntity->entityType.specific,
             baseEntity->entityType.extra
          );
-      setAttributeUpdateRequiredFlag(NetIO::ENTITY_TYPE_AI,false);
+      setAttributeUpdateRequiredFlag(NetIO::ENTITY_TYPE_AI, false);
       haveEntityTypeFlg = true;
    }
 
@@ -301,12 +293,12 @@ void Nib::entityState2Nib()
       haveWorldLocationFlg = true;
       haveOrientationFlg = true;
 
-      setAttributeUpdateRequiredFlag(NetIO::SPATIAL_AI,false);
+      setAttributeUpdateRequiredFlag(NetIO::SPATIAL_AI, false);
    }
     
    // PhysicalEntity pointer
    PhysicalEntity* physicalEntity = dynamic_cast<PhysicalEntity*>(baseEntity);
-   if (physicalEntity != 0) {
+   if (physicalEntity != nullptr) {
 
       if (isAttributeUpdateRequired(NetIO::FORCE_IDENTIFIER_AI)) {
          // Side: When mapping Force ID to Player Side ...
@@ -346,7 +338,7 @@ bool Nib::entityStateManager(const LCreal curExecTime)
 
       // Need to update this entity object ...
 
-      NetIO* netIO = (NetIO*)(getNetIO());
+      NetIO* netIO = static_cast<NetIO*>(getNetIO());
       RTI::RTIambassador* rtiAmb = netIO->getRTIambassador();
 
       // ---
@@ -372,7 +364,7 @@ bool Nib::entityStateManager(const LCreal curExecTime)
       if ( ok && isRegistered()) {
          try {
             // Create the attribute-value pair set
-            RTI::AttributeHandleValuePairSet* attrs = 0;
+            RTI::AttributeHandleValuePairSet* attrs = nullptr;
             attrs = RTI::AttributeSetFactory::create( NetIO::NUM_OBJECT_ATTRIBUTES );
 
             // Load the set with updated attribute values
@@ -414,9 +406,9 @@ void Nib::updateBasicEntity(
          RTI::AttributeHandleValuePairSet* attrs, 
          const LCreal)
 {
-   if (baseEntity != 0) {
+   if (baseEntity != nullptr) {
       // Our handler 
-      NetIO* netIO = (NetIO*)(getNetIO());
+      NetIO* netIO = static_cast<NetIO*>(getNetIO());
 
       // Our simulation
       Simulation::Simulation* ourSim = netIO->getSimulation();
@@ -438,11 +430,11 @@ void Nib::updateBasicEntity(
          Basic::NetHandler::toNetOrder(&netBuffer.entityNumber, entityId->entityNumber );
          attrs->add(netIO->getObjectAttributeHandle(
                NetIO::ENTITY_IDENTIFIER_AI),
-               (char*)&netBuffer,
+               reinterpret_cast<char*>(&netBuffer),
                sizeof(EntityIdentifierStruct)
             );
 
-         setAttributeUpdateRequiredFlag(NetIO::ENTITY_IDENTIFIER_AI,false);
+         setAttributeUpdateRequiredFlag(NetIO::ENTITY_IDENTIFIER_AI, false);
       }
 
       // Entity Type
@@ -462,7 +454,7 @@ void Nib::updateBasicEntity(
          Basic::NetHandler::toNetOrder(&netBuffer.countryCode, entityType->countryCode );
          attrs->add(netIO->getObjectAttributeHandle(
                NetIO::ENTITY_TYPE_AI),
-               (char*)&netBuffer,
+               reinterpret_cast<char*>(&netBuffer),
                sizeof(EntityTypeStruct)
             );
 
@@ -483,25 +475,23 @@ void Nib::updateBasicEntity(
          SpatialRVStruct* spatialRvw = &(baseEntity->spatialRvw);
 
          // Net order buffer (used to send the attribute to the RTI)
-         const unsigned int SPATIAL_NET_BUFFER_SIZE = sizeof(SpatialStruct)+sizeof(SpatialRVStruct);
+         const unsigned int SPATIAL_NET_BUFFER_SIZE = sizeof(SpatialStruct) + sizeof(SpatialRVStruct);
          unsigned char netBuffer[SPATIAL_NET_BUFFER_SIZE];
 
-         SpatialStruct* netSpatial =
-               (SpatialStruct*) &netBuffer[0];
-         SpatialRVStruct* netSpatialRvw =
-               (SpatialRVStruct*) &netBuffer[sizeof(SpatialStruct)];
+         SpatialStruct* netSpatial = reinterpret_cast<SpatialStruct*>(&netBuffer[0]);
+         SpatialRVStruct* netSpatialRvw = reinterpret_cast<SpatialRVStruct*>(&netBuffer[sizeof(SpatialStruct)]);
 
          // Ref Position 
          double refLat = 0.0;
          double refLon = 0.0;
-         if (ourSim != 0) {
+         if (ourSim != nullptr) {
             refLat = ourSim->getRefLatitude();
             refLon = ourSim->getRefLongitude();
          }
 
          // Convert position vector to Lat/Lon/Alt
-         double alt;
-         double simCoord[3] = { 0, 0, 0 };
+         double alt = 0.0;
+         double simCoord[3] = { 0.0, 0.0, 0.0 };
          Basic::Nav::convertPosVec2LL(
                refLat, refLon, 
                pos,
@@ -512,9 +502,9 @@ void Nib::updateBasicEntity(
          //std::cout << "RprFom::Nib::entityState2Nib(): simCoord(" << simCoord[Basic::Nav::ILAT] << "," << simCoord[Basic::Nav::ILON] << "," << simCoord[Basic::Nav::IALT] << ")"  << std::endl;
 
          // Convert to geocentric coordinates
-         double geocPos[3] = { 0, 0, 0 };
-         LCreal geocVel[3] = { 0, 0, 0 };
-         LCreal geocAcc[3] = { 0, 0, 0 };
+         double geocPos[3] = { 0.0, 0.0, 0.0 };
+         LCreal geocVel[3] = { 0.0, 0.0, 0.0 };
+         LCreal geocAcc[3] = { 0.0, 0.0, 0.0 };
          Basic::Nav::getWorldPosAccVel(simCoord, vel.ptr(), accel.ptr(), geocPos, geocVel, geocAcc);
 
          // Dead reckoning algorithm
@@ -527,7 +517,7 @@ void Nib::updateBasicEntity(
          // Is Frozen?
          {
             bool simFrz = false;
-            if (ourSim != 0) simFrz = ourSim->isFrozen();
+            if (ourSim != nullptr) simFrz = ourSim->isFrozen();
             if (isFrozen() || simFrz) spatialRvw->isFrozen = RTI::RTI_TRUE;  // Is this object or the simulation frozen?
             else spatialRvw->isFrozen = RTI::RTI_FALSE;
 
@@ -553,9 +543,9 @@ void Nib::updateBasicEntity(
             VelocityVectorStruct* velocityVector = &spatialRvw->velocityVector;
             VelocityVectorStruct* netVelocityVector = &netSpatialRvw->velocityVector;
 
-            velocityVector->xVelocity = RTI::Float(geocVel[Basic::Nav::IX]);
-            velocityVector->yVelocity = RTI::Float(geocVel[Basic::Nav::IY]);
-            velocityVector->zVelocity = RTI::Float(geocVel[Basic::Nav::IZ]);
+            velocityVector->xVelocity = static_cast<RTI::Float>(geocVel[Basic::Nav::IX]);
+            velocityVector->yVelocity = static_cast<RTI::Float>(geocVel[Basic::Nav::IY]);
+            velocityVector->zVelocity = static_cast<RTI::Float>(geocVel[Basic::Nav::IZ]);
 
             Basic::NetHandler::toNetOrder(&netVelocityVector->xVelocity, velocityVector->xVelocity);
             Basic::NetHandler::toNetOrder(&netVelocityVector->yVelocity, velocityVector->yVelocity);
@@ -567,9 +557,9 @@ void Nib::updateBasicEntity(
             AccelerationVectorStruct* accelerationVector = &spatialRvw->accelerationVector;
             AccelerationVectorStruct* netAccelerationVector = &netSpatialRvw->accelerationVector;
 
-            accelerationVector->xAcceleration = RTI::Float(geocAcc[Basic::Nav::IX]);
-            accelerationVector->yAcceleration = RTI::Float(geocAcc[Basic::Nav::IY]);
-            accelerationVector->zAcceleration = RTI::Float(geocAcc[Basic::Nav::IZ]);
+            accelerationVector->xAcceleration = static_cast<RTI::Float>(geocAcc[Basic::Nav::IX]);
+            accelerationVector->yAcceleration = static_cast<RTI::Float>(geocAcc[Basic::Nav::IY]);
+            accelerationVector->zAcceleration = static_cast<RTI::Float>(geocAcc[Basic::Nav::IZ]);
 
             Basic::NetHandler::toNetOrder(&netAccelerationVector->xAcceleration, accelerationVector->xAcceleration);
             Basic::NetHandler::toNetOrder(&netAccelerationVector->yAcceleration, accelerationVector->yAcceleration);
@@ -582,12 +572,12 @@ void Nib::updateBasicEntity(
             OrientationStruct* netOrientation = &netSpatialRvw->orientation;
 
             // Convert Euler angles to geocentric angles
-            LCreal geocAngles[3] = { 0, 0, 0 };
+            LCreal geocAngles[3] = { 0.0, 0.0, 0.0 };
             Basic::Nav::getGeocAngle(simCoord, angles.ptr(), geocAngles);
 
-            orientation->phi   = RTI::Float(geocAngles[Basic::Nav::IPHI]);
-            orientation->theta = RTI::Float(geocAngles[Basic::Nav::ITHETA]);
-            orientation->psi   = RTI::Float(geocAngles[Basic::Nav::IPSI]);
+            orientation->phi   = static_cast<RTI::Float>(geocAngles[Basic::Nav::IPHI]);
+            orientation->theta = static_cast<RTI::Float>(geocAngles[Basic::Nav::ITHETA]);
+            orientation->psi   = static_cast<RTI::Float>(geocAngles[Basic::Nav::IPSI]);
 
             Basic::NetHandler::toNetOrder(&netOrientation->phi, orientation->phi);
             Basic::NetHandler::toNetOrder(&netOrientation->theta, orientation->theta);
@@ -610,11 +600,11 @@ void Nib::updateBasicEntity(
 
          attrs->add(
                netIO->getObjectAttributeHandle(NetIO::SPATIAL_AI),
-               (char*)&netBuffer,
+               reinterpret_cast<char*>(&netBuffer),
                SPATIAL_NET_BUFFER_SIZE
             );
 
-         setAttributeUpdateRequiredFlag(NetIO::SPATIAL_AI,false);
+         setAttributeUpdateRequiredFlag(NetIO::SPATIAL_AI, false);
       }
    }
 }
@@ -637,9 +627,9 @@ void Nib::updatePhysicalEntity(
 {
    // PhysicalEntity??
    PhysicalEntity* physicalEntity =  dynamic_cast<PhysicalEntity*>(baseEntity);
-   if (physicalEntity != 0) {
+   if (physicalEntity != nullptr) {
       // Our handler 
-      NetIO* netIO = (NetIO*)(getNetIO());
+      NetIO* netIO = static_cast<NetIO*>(getNetIO());
 
       // Force Identifier
       if (isAttributeUpdateEnabled(NetIO::FORCE_IDENTIFIER_AI)) {
@@ -664,14 +654,14 @@ void Nib::updatePhysicalEntity(
 
          //std::cout << "Send force: " << physicalEntity->forceIdentifier << std::endl;;
 
-         unsigned char netBuffer = (unsigned char)(physicalEntity->forceIdentifier);  // 8 bits enum type (ForceIdentifierEnum8)
+         unsigned char netBuffer = static_cast<unsigned char>(physicalEntity->forceIdentifier);  // 8 bits enum type (ForceIdentifierEnum8)
          attrs->add(netIO->getObjectAttributeHandle(
                NetIO::FORCE_IDENTIFIER_AI),
-               (char*)&netBuffer,
+               reinterpret_cast<char*>(&netBuffer),
                sizeof(netBuffer)
             );
 
-         setAttributeUpdateRequiredFlag(NetIO::FORCE_IDENTIFIER_AI,false);
+         setAttributeUpdateRequiredFlag(NetIO::FORCE_IDENTIFIER_AI, false);
       }
    }
 }
