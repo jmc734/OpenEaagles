@@ -44,7 +44,7 @@ PROJECTS += otw
 #
 # HLA interface library
 #
-#PROJECTS += "hla"
+PROJECTS += "hla"
 
 #
 # Rules

@@ -3,7 +3,6 @@
 -- If premake command is not supplied an action (target compiler), exit!
 --
 -- Targets of interest:
---     vs2008     (Visual Studio 2008)
 --     vs2010     (Visual Studio 2010)
 --     vs2012     (Visual Studio 2012)
 --     vs2013     (Visual Studio 2013)
@@ -28,11 +27,23 @@ OEIncPath         = "../../include"
 OE3rdPartyIncPath = OE_3RD_PARTY_ROOT.."/include"
 
 --
+-- directory location for HLA include and library paths
+--
+HLA_ROOT = "../../../portico-2.0.1"
+HLAIncPath = HLA_ROOT.."/include/hla13"
+if (_ACTION == "vs2010") then
+  HLALibPath = HLA_ROOT.."/lib/vc10"
+end
+if (_ACTION == "vs2012") then
+  HLALibPath = HLA_ROOT.."/lib/vc11"
+end
+
+--
 -- determine target directories for project/solution files and 
 -- compiled libraries
 --
 locationPath  = "../" .. _ACTION
-if (_ACTION == "vs2008") or (_ACTION == "vs2010") or (_ACTION == "vs2012") or (_ACTION == "vs2013") then
+if (_ACTION == "vs2010") or (_ACTION == "vs2012") or (_ACTION == "vs2013") then
   targetDirPath = "../../lib/".._ACTION
 end
 if (_ACTION == "codelite") or (_ACTION == "codeblocks") then
@@ -81,7 +92,7 @@ solution "oe"
    -- common release configuration flags and symbols
    configuration { "Release" }
       flags { "Optimize" }
-      if (_ACTION == "vs2008") or (_ACTION == "vs2010") or (_ACTION == "vs2012") or (_ACTION == "vs2013") then
+      if (_ACTION == "vs2010") or (_ACTION == "vs2012") or (_ACTION == "vs2013") then
          -- enable compiler intrinsics and favour speed over size
          buildoptions { "/Oi", "/Ot" }
          defines { "WIN32", "_LIB", "NDEBUG" }
@@ -94,7 +105,7 @@ solution "oe"
    configuration { "Debug" }
       targetsuffix "_d"
       flags { "Symbols" }
-      if (_ACTION == "vs2008") or (_ACTION == "vs2010") or (_ACTION == "vs2012") or (_ACTION == "vs2013") then
+      if (_ACTION == "vs2010") or (_ACTION == "vs2012") or (_ACTION == "vs2013") then
          -- enable compiler intrinsics
          buildoptions { "/Oi" }
          defines { "WIN32", "_LIB", "_DEBUG" }
@@ -164,6 +175,16 @@ solution "oe"
       }
       includedirs { OE3rdPartyIncPath.."/JSBSim" }
       targetname "Dynamics"
+
+   -- IEEE HLA interface library
+   project "hla"
+      files {
+         "../../include/openeaagles/hla/**.h",
+         "../../src/hla/**.cpp"
+      }
+      includedirs { HLAIncPath }
+      defines { "RTI_USES_STD_FSTREAM" }
+      targetname "Hla"
 
    -- graphical instruments library
    project "instruments"
