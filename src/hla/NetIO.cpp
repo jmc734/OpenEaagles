@@ -41,7 +41,7 @@ END_SLOT_MAP()
 //------------------------------------------------------------------------------
 // Constructors, destructor, copy operator and clone()
 //------------------------------------------------------------------------------
-NetIO::NetIO() : rtiAmb()
+NetIO::NetIO() : rtiAmb(nullptr), fedAmb(nullptr)
 {
    STANDARD_CONSTRUCTOR()
 
@@ -60,13 +60,13 @@ NetIO::NetIO() : rtiAmb()
    rFlag = RTI::RTI_FALSE;
    cFlag = RTI::RTI_FALSE;
 
-   fedAmb = nullptr;
+   rtiAmb = new RTI::RTIambassador();
 
    nInObjects = 0;
    nOutObjects = 0;
 }
 
-NetIO::NetIO(const NetIO& org) : rtiAmb()
+NetIO::NetIO(const NetIO& org)
 { 
    STANDARD_CONSTRUCTOR()
    copyData(org,true);
@@ -108,6 +108,7 @@ void NetIO::copyData(const NetIO& org, const bool cc)
       setFederateName(nullptr);
       fedFileName = nullptr;
       fedAmb = nullptr;
+      rtiAmb = new RTI::RTIambassador();
 
       nInObjects = 0;
       nOutObjects = 0;
@@ -198,6 +199,7 @@ void NetIO::deleteData()
    }
    setFederationName(nullptr);
    setFederateName(nullptr);
+   if (rtiAmb != nullptr)    { delete rtiAmb;  rtiAmb = nullptr; }
    fedFileName = nullptr;
 }
 

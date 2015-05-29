@@ -144,7 +144,7 @@ public:
     // Other RTI functions
     //
 
-    RTI::RTIambassador* getRTIambassador() { return &rtiAmb; }  // Returns the RTI ambassador
+    RTI::RTIambassador* getRTIambassador() { return rtiAmb; }  // Returns the RTI ambassador
 
     // Send object class attribute updates to the RTI ambassador
     virtual bool updateAttributeValues(const RTI::ObjectHandle handle, RTI::AttributeHandleValuePairSet* attrs, const char* theTag = nullptr);
@@ -217,7 +217,7 @@ private:
    bool interactionClassPublished[MAX_INTERACTIONS];                       // Interaction class is published
    bool interactionClassSubscribed[MAX_INTERACTIONS];                      // Interaction class is subscribed
 
-   RTI::RTIambassador rtiAmb;                    // RTI's Ambassador
+   RTI::RTIambassador* rtiAmb;                   // RTI's Ambassador
    Ambassador* fedAmb;                           // Our Fed Ambassador
    Basic::safe_ptr<Basic::String> fedFileName;   // FED filename
 
