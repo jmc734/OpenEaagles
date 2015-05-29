@@ -575,7 +575,7 @@ bool NetIO::createAndJoinFederation()
        // Try to create the federation
        // ---
        try {
-           rtiAmb.createFederationExecution(*federation, getFedFileName());
+           rtiAmb->createFederationExecution(*federation, getFedFileName());
            std::cout << "*** Federation Created" << std::endl;
            #ifdef WIN32
                Sleep(1000);
@@ -599,7 +599,7 @@ bool NetIO::createAndJoinFederation()
            int tries = 10;
            while (tries--) {
                try {
-                   rtiAmb.joinFederationExecution(*federate, 
+                   rtiAmb->joinFederationExecution(*federate, 
                                                   *federation,
                                                    fedAmb);
                    std::cout << "*** Joined Federation" << std::endl;
@@ -636,7 +636,7 @@ bool NetIO::resignAndDestroyFederation()
 
     if (federation != nullptr) {
        try {
-           rtiAmb.resignFederationExecution(
+           rtiAmb->resignFederationExecution(
                RTI::DELETE_OBJECTS_AND_RELEASE_ATTRIBUTES);
                std::cout << "*** Resigned Federation" << std::endl;
        }
@@ -646,7 +646,7 @@ bool NetIO::resignAndDestroyFederation()
        }
 
        try {
-           rtiAmb.destroyFederationExecution(*federation);
+           rtiAmb->destroyFederationExecution(*federation);
            std::cout << "*** Destroyed Federation" << std::endl;
        }
        catch(RTI::Exception& e) {
@@ -775,7 +775,7 @@ bool NetIO::doTick()
    //  std::cout << "*** Ticking..." << std::endl;
    try {
       //rtiAmb.tick(0.0,1.0);
-      rtiAmb.tick();
+      rtiAmb->tick();
    }
    catch (RTI::Exception& e) {
       std::cerr << "Exception throw from the RTI during tick: " << &e << std::endl;

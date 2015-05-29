@@ -78,9 +78,9 @@ bool Nib::munitionDetonationMsgFactory(const LCreal)
 
       // Velocity
       VelocityVectorStruct finalVelocityVector; 
-      Basic::NetHandler::toNetOrder(&finalVelocityVector.xVelocity, geocVel[Basic::Nav::IX]);
-      Basic::NetHandler::toNetOrder(&finalVelocityVector.yVelocity, geocVel[Basic::Nav::IY]);
-      Basic::NetHandler::toNetOrder(&finalVelocityVector.zVelocity, geocVel[Basic::Nav::IZ]);
+      Basic::NetHandler::toNetOrder(&finalVelocityVector.xVelocity, static_cast<float>(geocVel[Basic::Nav::IX]));
+      Basic::NetHandler::toNetOrder(&finalVelocityVector.yVelocity, static_cast<float>(geocVel[Basic::Nav::IY]));
+      Basic::NetHandler::toNetOrder(&finalVelocityVector.zVelocity, static_cast<float>(geocVel[Basic::Nav::IZ]));
       pParams->add(
          netIO->getInteractionParameterHandle(NetIO::FINAL_VELOCITY_VECTOR_MD_PI), 
          reinterpret_cast<char*>(&finalVelocityVector), 

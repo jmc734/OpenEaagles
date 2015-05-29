@@ -80,9 +80,9 @@ bool Nib::weaponFireMsgFactory(const LCreal)
 
       // Velocity
       VelocityVectorStruct initialVelocityVector; 
-      Basic::NetHandler::toNetOrder(&initialVelocityVector.xVelocity, geocVel[Basic::Nav::IX]);
-      Basic::NetHandler::toNetOrder(&initialVelocityVector.yVelocity, geocVel[Basic::Nav::IY]);
-      Basic::NetHandler::toNetOrder(&initialVelocityVector.zVelocity, geocVel[Basic::Nav::IZ]);
+      Basic::NetHandler::toNetOrder(&initialVelocityVector.xVelocity, static_cast<float>(geocVel[Basic::Nav::IX]));
+      Basic::NetHandler::toNetOrder(&initialVelocityVector.yVelocity, static_cast<float>(geocVel[Basic::Nav::IY]));
+      Basic::NetHandler::toNetOrder(&initialVelocityVector.zVelocity, static_cast<float>(geocVel[Basic::Nav::IZ]));
       pParams->add(
          netIO->getInteractionParameterHandle(NetIO::INITIAL_VELOCITY_VECTOR_WF_PI), 
          reinterpret_cast<char*>(&initialVelocityVector),
