@@ -54,11 +54,6 @@ if (os.is("linux")) then
 end
 print ("Target directory path: "..targetDirPath)
 
--- for now, premake does not support this action, so use 2012 instead
---if (_ACTION == "vs2013") then
---   _ACTION = "vs2012"
---end
-
 solution "oe"
 
    -- destination directory for generated solution/project files
