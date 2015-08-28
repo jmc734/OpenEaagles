@@ -21,7 +21,8 @@ include makedefs
 # terrain      : -
 #
 PROJECTS = basic
-PROJECTS += basicGL instruments
+# PROJECTS += basicGL 
+PROJECTS += instruments
 PROJECTS += dafif
 PROJECTS += ioDevice
 PROJECTS += linearSys 
@@ -34,12 +35,12 @@ PROJECTS += recorder
 #
 # GUI interface libraries
 #
-PROJECTS += "gui/glut"
+# PROJECTS += "gui/glut"
 
 # Out-the-Window interface classes to talk to visual systems
 # - CIGI Class Library 3.x interface
 # - download and install cigicl
-PROJECTS += otw
+# PROJECTS += otw
 
 #
 # HLA interface library

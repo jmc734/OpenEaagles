@@ -15,6 +15,7 @@
     #include <WS2tcpip.h>
     #define  bzero(a,b)   ZeroMemory(a,b)
     typedef int socklen_t;
+    #define OE_EWOULDBLOCK WSAEWOULDBLOCK
 #else
     #include <arpa/inet.h>
     #include <sys/fcntl.h>
@@ -23,6 +24,7 @@
     #ifdef sun
         #include <sys/filio.h> // -- added for Solaris 10
     #endif
+    #define OE_EWOULDBLOCK EWOULDBLOCK
     static const int INVALID_SOCKET = -1; // Always -1 and errno is set
     static const int SOCKET_ERROR   = -1;
 #endif
@@ -194,7 +196,7 @@ unsigned int TcpHandler::recvData(char* const packet, const int maxSize)
    else if (result < 0) {
       // For error conditions, check for non-blocking and adjust result
       // to indicate there is no error
-      if (errno != EAGAIN && errno != EWOULDBLOCK) {
+      if (errno != EAGAIN && errno != OE_EWOULDBLOCK) {
          // Error condition! Close the conntection
          std::perror("TcpHandler::recvData(): ");
          closeConnection();

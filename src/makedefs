@@ -24,7 +24,7 @@ endif
 # ---
 # library directories
 # ---
-OPENEAAGLES_LIB_DIR = $(OE_ROOT)/lib/linux
+OPENEAAGLES_LIB_DIR = $(OE_ROOT)/lib
 
 # ---
 # Uncomment if using FTGL version 2.1.2 or earlier
@@ -64,7 +64,7 @@ CPPFLAGS += -g -O2
 # ---
 # Modify standard flags
 # ---
-CPPFLAGS += -fPIC
+#CPPFLAGS += -fPIC
 CPPFLAGS += -I$(OE_ROOT)/include -I$(OE_3RD_PARTY_ROOT)/include
 #CPPFLAGS += -isystem$(OE_ROOT)/include -isystem$(OE_3RD_PARTY_ROOT)/include
 CPPFLAGS += -pthread
@@ -73,4 +73,5 @@ CPPFLAGS += -Wall
 CPPFLAGS += -std=c++11
 # warn of old c-style casts, so they can be replaced
 #CPPFLAGS += -Wold-style-cast
+CPPFLAGS += -D WIN32 -D __MINGW64__ -D __CYGWIN__
 
